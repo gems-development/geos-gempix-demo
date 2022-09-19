@@ -3,13 +3,18 @@ import Map1 from './Map';
 import vkLogo from "./img/vkLogo.png";
 import YtLogo from "./img/YtLogo.png";
 import GLogo from "./img/g.png";
+import Menu from'./Menu/BurderMenu.js';
 
 function App() {
   return (
     <div>
       <body>
         <header>
+            
           <div className='container__head'>
+          <div className='burger-menu'>
+          <Menu/>
+            </div>
             <div className="title">GemPix</div>
 
             <div className='links'>

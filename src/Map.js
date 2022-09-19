@@ -1,55 +1,69 @@
-import React from 'react';
-import { YMaps, Map, Placemark, TrafficControl, FullscreenControl, GeolocationControl, 
-    ZoomControl, TypeSelector, Rectangle, GeoObject } from 'react-yandex-maps';
+import React, { useCallback } from 'react';
+import { YMaps, Map, Placemark, GeolocationControl, ZoomControl, 
+    Rectangle, GeoObject } from 'react-yandex-maps';
 import './App.css';
+import './Map.css';
 
 const Map1 = () => {
+    let center = [54.98517806972585,73.3714099999999];
+
     return (
         <YMaps>
-            <div>
+            <callBack></callBack>
+            <div className="map-container">
+
+                <div className="child aux-unit"></div>
                 <Map
-                    defaultState={{
-                        center: [54.98517806972585,73.3714099999999],
+                    defaultState = {{
+                        center: center,
                         zoom: 16,
                     }}
-                    className="map-settings">
+                    className = "child map-mode"
+                >
 
-                    <Placemark geometry = {[54.98517806972585,73.3714099999999]} />
-
-                    <TrafficControl options = {{float: 'right'}} />
-
-                    <Rectangle 
-                        geometry={[[54.990,73.41], 
-                            [54.98276501800599,73.39322532872805]]} 
-                        options={{
-                            draggable: true,
-                            fillColor: '#ffff0022',
-                            strokeColor: '#3caa3c88',
-                            strokeWidth: 7
-                        }} 
-                    />
-
-                    <GeoObject
-                        geometry={{
-                            type: 'LineString',
-                            coordinates: [
-                                [54.98517806972585,73.3714099999999],
-                                [55.02380056967736,73.2661725],
-                            ],
+                    <ZoomControl 
+                        options = {{
+                            size: 'small',
+                            float: 'none',
+                            position: {
+                                right: 40,
+                                top: 250,
+                            }
                         }}
                     />
-
-                    <FullscreenControl options={{float: 'left'}} />
-
-                    <GeolocationControl options={{float: 'right'}} />
-
-                    <TypeSelector options={{float: 'right'}} />
-
-                    <ZoomControl options={{float: 'left'}} />
+                    
+                    <GeolocationControl 
+                        options = {{
+                            size: 'small',
+                            float: 'none',
+                            position: {
+                                right: 40,
+                                top: 315,
+                            } 
+                        }}
+                    />
+                    
+                    <Placemark
+                        modules = {['geoObject.addon.balloon']} 
+                        defaultGeometry = {center}                        
+                        properties = {{
+                            balloonContentHeader: 'balloon header',
+                            balloonContentBody: 'Здесь будет информация о точке!',
+                            balloonContentFooter: 'balloon footer', 
+                            
+                        }}
+                        options = {{
+                            iconLayout: 'default#image',
+                            iconImageHref: 'https://cdn-icons-png.flaticon.com/512/5836/5836608.png',
+                            iconImageSize: [46, 57],
+                            iconImageOffset: [-23, -57],
+                            draggable: true,
+                        }}  
+                    />
                 </Map>
             </div>
         </YMaps>
-    );
+    )
 };
 
 export default Map1;
