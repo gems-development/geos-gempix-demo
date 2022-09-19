@@ -9,51 +9,73 @@ header {
     color: whitesmoke;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 	height: 58px;
+	z-index: 3;
 }
+.burger-menu{
+	display: flex;
+	z-index: 2;
+	margin-right: 30px;
+}
+
+
 .container__head{
 	display: flex;
 	justify-content: space-between;
 	
+	
+}
+.blogs{
+	margin-bottom: 0px;
+	z-index: 3;
 }
 .links{
 	font-size: 30px;
 	margin-top: 25px;
 	margin-right: 5px;
+	margin-bottom: 0px;
+	margin-left: 300px;
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-start;
+	z-index: 3;
 
 }
 .link{
 	display: inline-block;
 	vertical-align: bottom;
-	margin: 0 5px;
+	margin-left: 5px;
+	z-index: 3;
 }
 
 
 .title {
 	font-size: 60px;
 	padding-top: 1px;
-	padding-left: 250px;
+	padding-right: 400px;
 	text-align: center;
+	z-index: 3;
 }
+/*map*/
 
 .work_area {
 	width: 100%;
 	height: 100%;
+	z-index: 1;
 }
 
 .map-settings {
 	width: 100%;
 	height: 90vh;
     margin:0 auto;
+	z-index: 1;
 }
-
+/* Footer */
 footer {
     width: 100%;
 	background: #333;
     height: 42px;
 	color: whitesmoke;
 	font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+	z-index: 3;
 }
 .post{
 	font-size: 12px;
