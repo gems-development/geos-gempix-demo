@@ -35,7 +35,7 @@ function App() {
                   height="32" alt="vkLogo" /></a>
 
               </div>
-              <div className='Ytlink'>
+              <div className='link'>
 
                 <a href="https://www.youtube.com/channel/UCOAg2UAdziDE-EiTKQtv2Qw"><img src={YtLogo} width="32"
                   height="32" alt="vkLogo" /></a>
