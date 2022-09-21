@@ -1,28 +1,70 @@
-import React, { useCallback } from 'react';
-import { YMaps, Map, Placemark, GeolocationControl, ZoomControl, 
-    Rectangle, GeoObject } from 'react-yandex-maps';
-import './App.css';
+import React, { useState, useRef } from 'react';
+import { YMaps, Map, Placemark, GeolocationControl, ZoomControl } from 'react-yandex-maps';
 import './Map.css';
 
-const Map1 = () => {
-    let center = [54.98517806972585,73.3714099999999];
+const mapState = {
+    center: [54.98517806972585,73.3714099999999],
+    zoom: 16
+};
+
+export default function Map1() {
+    
+    const ymaps = React.useRef(null);
+    const placemarkRef = React.useRef(null);
+    const mapRef = React.useRef(null);
+
+    // Создание метки
+    const createPlacemark = (coords) => {
+        return new ymaps.current.Placemark(coords, 
+            {
+                balloonContentHeader: 'Point Data',
+                balloonContentBody: '[coordinates]', 
+            },
+            {
+                iconLayout: 'default#image',
+                iconImageHref: 'https://cdn-icons-png.flaticon.com/512/5836/5836608.png',
+                iconImageSize: [46, 46],
+                iconImageOffset: [-23, -46],
+                draggable: true 
+            }
+        );
+    };
+
+    // Обратное геокодирование
+    const getAddress = (coords) => {
+        ymaps.current.geocode(coords).then((res) => {
+            const firstGeoObject = res.geoObjects.get(0);
+        })
+    }
+    
+    // Добавление метки на карту по адресу клика
+    const addPoint = (e) => {
+        const coords = e.get("coords");
+        placemarkRef.current = createPlacemark(coords);
+        mapRef.current.geoObjects.add(placemarkRef.current);
+        placemarkRef.current.events.add("dragend", function () {
+            getAddress(placemarkRef.current.geometry.getCoordinates());
+        });
+        getAddress(coords);
+    };
 
     return (
-        <YMaps>
-            <callBack></callBack>
-            <div className="map-container">
-
-                <div className="child aux-unit"></div>
+        <div className="map-size map-container">
+            <YMaps>
                 <Map
-                    defaultState = {{
-                        center: center,
-                        zoom: 16,
+                    className = "map-size map-mode"
+                    modules={["Placemark", "geocode", "geoObject.addon.balloon"]}
+                    instanceRef={mapRef}
+                    onLoad={(ympasInstance) => (ymaps.current = ympasInstance)}
+                    onClick={addPoint}
+                    state={mapState} 
+                    options={{
+                        suppressMapOpenBlock: true
                     }}
-                    className = "child map-mode"
                 >
-
+                    
                     <ZoomControl 
-                        options = {{
+                        options={{
                             size: 'small',
                             float: 'none',
                             position: {
@@ -30,10 +72,11 @@ const Map1 = () => {
                                 top: 250,
                             }
                         }}
+                        className="zoombar-style"
                     />
                     
                     <GeolocationControl 
-                        options = {{
+                        options={{
                             size: 'small',
                             float: 'none',
                             position: {
@@ -42,30 +85,10 @@ const Map1 = () => {
                             } 
                         }}
                     />
-                    
-                    <Placemark
-                        modules = {['geoObject.addon.balloon']} 
-                        defaultGeometry = {center}                        
-                        properties = {{
-                            balloonContentHeader: 'balloon header',
-                            balloonContentBody: 'Здесь будет информация о точке!',
-                            balloonContentFooter: 'balloon footer', 
-                            
-                        }}
-                        options = {{
-                            iconLayout: 'default#image',
-                            iconImageHref: 'https://cdn-icons-png.flaticon.com/512/5836/5836608.png',
-                            iconImageSize: [46, 57],
-                            iconImageOffset: [-23, -57],
-                            draggable: true,
-                        }}  
-                    />
                 </Map>
-            </div>
-        </YMaps>
+            </YMaps>
+        </div>
     )
-};
-
-export default Map1;
+}
 
 
