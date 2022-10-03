@@ -25,7 +25,7 @@ export default function Map1() {
             },
             {
                 iconLayout: 'default#image',
-                iconImageHref: 'https://cdn-icons-png.flaticon.com/512/5836/5836608.png',
+                iconImageHref: 'https://cdn-user-icons.flaticon.com/80802/80802443/1664782767840.svg?token=exp=1664783690~hmac=98af978fca0518c27f5b564fd482976c',
                 iconImageSize: [46, 46],
                 iconImageOffset: [-23, -46],
                 draggable: true 
@@ -57,8 +57,8 @@ export default function Map1() {
             {
                 editorDrawingCursor: "crosshair",
                 editorMaxPoints: 2,
-                fillColor: "#00FF00",
-                strokeColor: "#0000FF",
+                fillColor: "#0bbcc9",
+                strokeColor: "#0bbcc9",
                 strokeWidth: 5
             }
         );
@@ -73,8 +73,8 @@ export default function Map1() {
             {
                 editorDrawingCursor: "crosshair",
                 editorMaxPoints: 5,
-                fillColor: "#00FF00",
-                strokeColor: "#0000FF",
+                fillColor: "#b30bc900",
+                strokeColor: "#0bbcc9",
                 strokeWidth: 5
             }
         );
@@ -90,16 +90,15 @@ export default function Map1() {
                 <Map
                     className = "map-size map-mode"
                     modules={["Placemark", "Polyline", "Polygon", "geocode", "geoObject.addon.balloon",
-                        "geoObject.addon.editor"]}
+                        "geoObject.addon.editor", "layout.ImageWithContent"]}
                     instanceRef={mapRef}
                     onLoad={(ymapsInstance) => (ymaps.current = ymapsInstance)}
                     //onClick={addPoint}
-                    onClick={addPolyline}
-                    //onClick={addPolygon}
+                    //onClick={addPolyline}
+                    onClick={addPolygon}
                     state={mapState} 
                     options={{suppressMapOpenBlock: true}}
                 >
-                    
                     <ZoomControl 
                         options={{
                             size: 'small',
@@ -121,7 +120,7 @@ export default function Map1() {
                                 top: 315,
                             } 
                         }}
-                    />
+                    />     
                 </Map>
             </YMaps>
         </div>
