@@ -1,11 +1,13 @@
 import React, {useState} from "react";
 import "./BurgerMenu.css"
-const Menu = () => {
+import DropdownMenu from "../DropdownMenu/DropdownMenu.js"
+const Menu = ({items}) => {
 
     // to change burger classes
     const [burger_class, setBurgerClass] = useState("burger-bar unclicked")
     const [menu_class, setMenuClass] = useState("menu hidden")
     const [isMenuClicked, setIsMenuClicked] = useState(false)
+    
 
     // toggle burger menu change
     const updateMenu = () => {
@@ -28,8 +30,24 @@ const Menu = () => {
                     <div className={burger_class} ></div>
                 </div>
             </nav>
+            
+            
 
-            <div className={menu_class}></div>
+            <div className={menu_class}>
+            <nav className="menu_content">
+                <ul className="list">
+                    <li>
+                        <DropdownMenu/>
+                    </li>
+                    {items.map(item=>
+                        <li>
+                            <button className="content_button">{item.value}</button>
+                        </li>
+                        )}
+                </ul>
+
+            </nav>
+            </div>
         </div>
     )
 }

@@ -3,9 +3,10 @@ import Map1 from './Map';
 import vkLogo from "./img/vkLogo.png";
 import YtLogo from "./img/YtLogo.png";
 import GLogo from "./img/g.png";
-import Menu from'./Menu/BurderMenu.js';
+import Menu from'./Menu/BurgerMenu.js';
 
 function App() {
+  const items = [{value:"Ещё кнопка"}]
   return (
     <div>
       <body>
@@ -13,7 +14,7 @@ function App() {
             
           <div className='container__head'>
           <div className='burger-menu'>
-          <Menu/>
+          <Menu items={items}/>
             </div>
             <div className="title">GemPix</div>
 

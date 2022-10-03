@@ -1,7 +1,7 @@
 import React from 'react';
 import { YMaps, Map, GeolocationControl, ZoomControl } from 'react-yandex-maps';
 import './Map.css';
-import './Menu/BurderMenu.js'
+import './Menu/BurgerMenu.js'
 
 const mapState = {
     center: [54.98517806972585,73.3714099999999],
