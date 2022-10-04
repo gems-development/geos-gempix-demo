@@ -22,17 +22,35 @@ nav {
 .content_button{
     color: whitesmoke;
 	font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font: bold;
     background: rgba(65, 63, 63);
     border: none;
     font-size: 16px;
     padding-bottom: 3px ;
+    padding-left: 0px;
     cursor: pointer;
+    text-decoration: none;
+    transition: 1.3s;
   }
+  .content_button:after {
+    display: block; 
+    content: ""; 
+    height: 2px;
+    width: 0%;
+    background-color: whitesmoke;
+    transition: width 0.4s ease-in-out;
+    }
+    .content_button:hover:after {
+width: 100%;
+}
 
-/*
-.content_button{
-
-}*/
+    
+.menu_content{
+    padding: 0;
+    padding-left: 4px;
+    
+    width: 100%;
+}
 
 
 .burger-bar {
@@ -53,6 +71,7 @@ nav {
     position:absolute;
     
     margin-top: 58px;
+
     top: 0;
     z-index: 1;
 }
