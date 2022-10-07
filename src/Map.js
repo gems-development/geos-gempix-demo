@@ -14,26 +14,57 @@ const mapRef = React.createRef(null);
 const polylineRef = React.createRef(null);
 const polygonRef = React.createRef(null);
 
-// Добавление точек на карту
-export const addPoint = () => {
-    const newPlacemark = new ymaps.current.Placemark([], {},
+// Обратное геокодирование
+const getAddress = (coords) => {
+    ymaps.current.geocode(coords).then((res) => {
+        const firstGeoObject = res.geoObjects.get(0);
+    })
+}
+
+// Работа с точками на карте
+export const newPoint = e => {
+    const coords = e.get("coords");
+    const newPlacemark = new ymaps.current.Placemark(coords, 
         {
-            editorDrawingCursor: "crosshair",
+            balloonContentHeader: 'Точка',
+            balloonContentBody: JSON.stringify(coords),
+        },
+        {
             iconLayout: 'default#image',
             iconImageHref: 'https://cdn-user-icons.flaticon.com/80802/80802443/1664782767840.svg?token=exp=1664783690~hmac=98af978fca0518c27f5b564fd482976c',
             iconImageSize: [46, 46],
             iconImageOffset: [-23, -46],
-            draggable: true
+            draggable: true,
+            hideIconOnBalloonOpen: false,
+            balloonOffset: [ 0, -45 ]
         }    
     );
     placemarkRef.current = newPlacemark;
     mapRef.current.geoObjects.add(placemarkRef.current);
-    placemarkRef.current.editor.startDrawing();
-};
+    placemarkRef.current.events.add("dragend", function () {
+        getAddress(placemarkRef.current.geometry.getCoordinates());
+    });
+    getAddress(coords);
 
-// Добавление полилиний на карту
-export const addPolyline = () => {
-    const newPolyline = new ymaps.current.Polyline([], {},
+    //Удаление точки
+    placemarkRef.current.events.add('contextmenu', function(e) {
+        var thisPlacemark = e.get('target');
+        mapRef.current.geoObjects.remove(thisPlacemark);
+    });
+}
+
+// Очистка всех объектов на карте
+export const removeAllObjects = () => {
+    mapRef.current.geoObjects.removeAll();
+}
+
+// Работа с полилиниями на карте
+export const newPolyline = () => {
+    const newPolyline = new ymaps.current.Polyline([], 
+        {
+            balloonContentHeader: 'Полилиния',
+            balloonContentBody: 'Длина: [value]',
+        },
         {
             editorDrawingCursor: "crosshair",
             editorMaxPoints: 2,
@@ -46,11 +77,21 @@ export const addPolyline = () => {
     polylineRef.current = newPolyline;
     mapRef.current.geoObjects.add(polylineRef.current);
     polylineRef.current.editor.startDrawing();
+
+    //Удаление полилинии
+    polylineRef.current.events.add('contextmenu', function(e) {
+        var thisPlacemark = e.get('target');
+        mapRef.current.geoObjects.remove(thisPlacemark);
+    });
 };
 
-// Добавление полигона на карту
-export const addPolygon = () => {
-    const newPolygon = new ymaps.current.Polygon([], {},
+// Работа с полигонами на карте
+export const newPolygon = () => {
+    const newPolygon = new ymaps.current.Polygon([], 
+        {
+            balloonContentHeader: 'Полигон',
+            balloonContentBody: 'Периметр: [value] Площадь: [value]',
+        },
         {
             editorDrawingCursor: "crosshair",
             editorMaxPoints: 5,
@@ -63,6 +104,12 @@ export const addPolygon = () => {
     polygonRef.current = newPolygon;
     mapRef.current.geoObjects.add(polygonRef.current);
     polygonRef.current.editor.startDrawing();
+
+    //Удаление полигона
+    polygonRef.current.events.add('contextmenu', function(e) {
+        var thisPlacemark = e.get('target');
+        mapRef.current.geoObjects.remove(thisPlacemark);
+    });
 };
 
 // Рендеринг карты
@@ -78,6 +125,7 @@ export default function Map1() {
                     instanceRef = {mapRef}
                     onLoad = {(ymapsInstance) => (ymaps.current = ymapsInstance)}
                     state = {mapState} 
+                    onClick = {newPoint}
                     options = {{suppressMapOpenBlock: true}}
                 >
                     <ZoomControl 
