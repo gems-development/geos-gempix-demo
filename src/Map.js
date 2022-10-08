@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useCallback} from 'react';
 import { YMaps, Map, GeolocationControl, ZoomControl } from 'react-yandex-maps';
 import './Map.css';
 
@@ -6,6 +6,9 @@ const mapState = {
     center: [54.98517806972585,73.3714099999999],
     zoom: 16
 };
+
+var coords1 = [];
+var coords2 = [];
 
 // Хуки
 const ymaps = React.createRef(null);
@@ -60,6 +63,7 @@ export const removeAllObjects = () => {
 
 // Работа с полилиниями на карте
 export const newPolyline = () => {
+    
     const newPolyline = new ymaps.current.Polyline([], 
         {
             balloonContentHeader: 'Полилиния',
@@ -76,17 +80,22 @@ export const newPolyline = () => {
     );
     polylineRef.current = newPolyline;
     mapRef.current.geoObjects.add(polylineRef.current);
+
     polylineRef.current.editor.startDrawing();
+    polylineRef.current.editor.events.add("drawingstop", function (e) {
+        getPolylineCoords(polylineRef.current.geometry.getCoordinates());
+    });
 
     //Удаление полилинии
     polylineRef.current.events.add('contextmenu', function(e) {
-        var thisPlacemark = e.get('target');
-        mapRef.current.geoObjects.remove(thisPlacemark);
+        var thisPolyline = e.get('target');
+        mapRef.current.geoObjects.remove(thisPolyline);
     });
 };
 
 // Работа с полигонами на карте
 export const newPolygon = () => {
+    
     const newPolygon = new ymaps.current.Polygon([], 
         {
             balloonContentHeader: 'Полигон',
@@ -101,27 +110,59 @@ export const newPolygon = () => {
             draggable: true
         }
     );
+
     polygonRef.current = newPolygon;
     mapRef.current.geoObjects.add(polygonRef.current);
+
     polygonRef.current.editor.startDrawing();
+    polygonRef.current.editor.events.add("drawingstop", function (e) {
+        getPolygonCoords(polygonRef.current.geometry.getCoordinates());
+    });
 
     //Удаление полигона
     polygonRef.current.events.add('contextmenu', function(e) {
-        var thisPlacemark = e.get('target');
-        mapRef.current.geoObjects.remove(thisPlacemark);
+        var thisPolygon = e.get('target');
+        mapRef.current.geoObjects.remove(thisPolygon);
     });
+};
+
+function getPolylineCoords(coordsArr1) {
+    coords1.push(coordsArr1);
+    var stateMonitor1 = new ymaps.current.Monitor(polylineRef.current.editor.state);
+    if (!stateMonitor1.drawing) newPolyline();
+};
+
+function getPolygonCoords(coordsArr2) {
+    coords2.push(coordsArr2);
+    var stateMonitor2 = new ymaps.current.Monitor(polygonRef.current.editor.state);
+    if (!stateMonitor2.drawing) newPolygon();
 };
 
 // Рендеринг карты
 export default function Map1() {
     
+    // Выход из режима добавления примитивов нажатием ESC
+    const escFunction = useCallback((event) => {
+        if (event.keyCode === 27) {
+            polylineRef.current.editor.stopDrawing();
+            polylineRef.current.editor.stopEditing();
+            polygonRef.current.editor.stopDrawing();
+            polygonRef.current.editor.stopEditing();
+        }
+    }, []);
+    
+    useEffect(() => {
+        document.addEventListener("keydown", escFunction, false);
+        return () => {document.removeEventListener("keydown", escFunction, false);};
+    }, []);
+
     return (
         <div className="map-size map-container">
             <YMaps>
                 <Map
                     className = "map-size map-mode"
                     modules = {["Placemark", "Polyline", "Polygon", "geocode", "geoObject.addon.balloon",
-                        "geoObject.addon.editor"]}
+                        "geoObject.addon.editor", "Monitor"]}
                     instanceRef = {mapRef}
                     onLoad = {(ymapsInstance) => (ymaps.current = ymapsInstance)}
                     state = {mapState} 
