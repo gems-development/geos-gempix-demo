@@ -9,6 +9,8 @@ const mapState = {
 
 var coords1 = [];
 var coords2 = [];
+var stateMonitor1;
+var stateMonitor2;
 
 // Хуки
 const ymaps = React.createRef(null);
@@ -61,9 +63,30 @@ export const removeAllObjects = () => {
     mapRef.current.geoObjects.removeAll();
 }
 
+function getPolylineCoords(coordsArr1) {
+    coords1.push(coordsArr1);
+    stateMonitor1 = new ymaps.current.Monitor(polylineRef.current.editor.state);
+    if (!stateMonitor1.drawing) newPolyline();
+};
+
+function getPolygonCoords(coordsArr2) {
+    coords2.push(coordsArr2);
+    stateMonitor2 = new ymaps.current.Monitor(polygonRef.current.editor.state);
+    if (!stateMonitor2.drawing) newPolygon();
+};
+
 // Работа с полилиниями на карте
 export const newPolyline = () => {
     
+    if (stateMonitor2) {
+        polygonRef.current.editor.stopDrawing();
+        polygonRef.current.editor.stopEditing();
+    }
+    if (stateMonitor1) {
+        polylineRef.current.editor.stopDrawing();
+        polylineRef.current.editor.stopEditing();
+    }
+
     const newPolyline = new ymaps.current.Polyline([], 
         {
             balloonContentHeader: 'Полилиния',
@@ -74,7 +97,7 @@ export const newPolyline = () => {
             editorMaxPoints: 2,
             fillColor: "#0bbcc9",
             strokeColor: "#0bbcc9",
-            strokeWidth: 5,
+            strokeWidth: 8,
             draggable: true
         }
     );
@@ -95,6 +118,15 @@ export const newPolyline = () => {
 
 // Работа с полигонами на карте
 export const newPolygon = () => {
+
+    if (stateMonitor1) {
+        polylineRef.current.editor.stopDrawing();
+        polylineRef.current.editor.stopEditing();
+    }
+    if (stateMonitor2) {
+        polygonRef.current.editor.stopDrawing();
+        polygonRef.current.editor.stopEditing();
+    }
     
     const newPolygon = new ymaps.current.Polygon([], 
         {
@@ -106,7 +138,7 @@ export const newPolygon = () => {
             editorMaxPoints: 5,
             fillColor: "#b8a7a2aa",
             strokeColor: "#0bbcc9",
-            strokeWidth: 5,
+            strokeWidth: 8,
             draggable: true
         }
     );
@@ -126,22 +158,10 @@ export const newPolygon = () => {
     });
 };
 
-function getPolylineCoords(coordsArr1) {
-    coords1.push(coordsArr1);
-    var stateMonitor1 = new ymaps.current.Monitor(polylineRef.current.editor.state);
-    if (!stateMonitor1.drawing) newPolyline();
-};
-
-function getPolygonCoords(coordsArr2) {
-    coords2.push(coordsArr2);
-    var stateMonitor2 = new ymaps.current.Monitor(polygonRef.current.editor.state);
-    if (!stateMonitor2.drawing) newPolygon();
-};
-
 // Рендеринг карты
 export default function Map1() {
     
-    // Выход из режима добавления примитивов нажатием ESC
+    // Переход в режим добавления точек нажатием ESC
     const escFunction = useCallback((event) => {
         if (event.keyCode === 27) {
             polylineRef.current.editor.stopDrawing();
@@ -170,25 +190,11 @@ export default function Map1() {
                     options = {{suppressMapOpenBlock: true}}
                 >
                     <ZoomControl 
-                        options={{
-                            size: 'small',
-                            float: 'none',
-                            position: {
-                                right: 40,
-                                top: 250,
-                            }
-                        }}
+                        options={{ size: 'small', float: 'none', position: {right: 40, top: 250} }}
                     />
                     
                     <GeolocationControl 
-                        options={{
-                            size: 'small',
-                            float: 'none',
-                            position: {
-                                right: 40,
-                                top: 315,
-                            } 
-                        }}
+                        options={{ size: 'small', float: 'none', position: {right: 40, top: 315} }}
                     />     
                 </Map>
             </YMaps>
