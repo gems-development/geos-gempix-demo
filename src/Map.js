@@ -1,6 +1,7 @@
 import React, {useEffect, useCallback} from 'react';
-import { YMaps, Map, GeolocationControl, ZoomControl } from 'react-yandex-maps';
+import { YMaps, Map, ZoomControl } from 'react-yandex-maps';
 import './Map.css';
+import placemarkIcon from './img/placemarkIcon.png';
 
 const mapState = {
     center: [54.98517806972585,73.3714099999999],
@@ -36,12 +37,15 @@ export const newPoint = e => {
         },
         {
             iconLayout: 'default#image',
-            iconImageHref: 'https://cdn-user-icons.flaticon.com/80802/80802443/1664782767840.svg?token=exp=1664783690~hmac=98af978fca0518c27f5b564fd482976c',
+            iconImageHref: placemarkIcon,
             iconImageSize: [46, 46],
             iconImageOffset: [-23, -46],
             draggable: true,
             hideIconOnBalloonOpen: false,
-            balloonOffset: [ 0, -45 ]
+            balloonContentSize: [130, 69], 
+            balloonColor: "#cccccc", 
+            balloonShadow: true,
+            balloonOffset: [0, -45]
         }    
     );
     placemarkRef.current = newPlacemark;
@@ -94,7 +98,7 @@ export const newPolyline = () => {
         },
         {
             editorDrawingCursor: "crosshair",
-            editorMaxPoints: 2,
+            editorMaxPoints: 100,
             fillColor: "#0bbcc9",
             strokeColor: "#0bbcc9",
             strokeWidth: 8,
@@ -135,7 +139,7 @@ export const newPolygon = () => {
         },
         {
             editorDrawingCursor: "crosshair",
-            editorMaxPoints: 5,
+            editorMaxPoints: 100,
             fillColor: "#b8a7a2aa",
             strokeColor: "#0bbcc9",
             strokeWidth: 8,
@@ -190,12 +194,8 @@ export default function Map1() {
                     options = {{suppressMapOpenBlock: true}}
                 >
                     <ZoomControl 
-                        options={{ size: 'small', float: 'none', position: {right: 40, top: 250} }}
-                    />
-                    
-                    <GeolocationControl 
-                        options={{ size: 'small', float: 'none', position: {right: 40, top: 315} }}
-                    />     
+                        options={{ size: 'small', float: 'none', position: {right: 40, top: 280} }}
+                    />   
                 </Map>
             </YMaps>
         </div>
