@@ -5,8 +5,7 @@ import placemarkIcon from './img/placemarkIcon.png';
 
 const mapState = {
     center: [54.98517806972585,73.3714099999999],
-    zoom: 16,
-    behaviors: ["disable('dblClickZoom')"]
+    zoom: 16
 };
 
 var coords1 = [];
