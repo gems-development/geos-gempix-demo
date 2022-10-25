@@ -27,13 +27,13 @@ const getAddress = (coords) => {
     })
 }
 
-// Работа с точками на карте
-export const newPoint = e => {
-    const coords = e.get("coords");
-    const newPlacemark = new ymaps.current.Placemark(coords, 
+// Создание точки
+function createPlacemark(coords) {
+    return new ymaps.current.Placemark(coords, 
         {
             balloonContentHeader: 'Точка',
             balloonContentBody: JSON.stringify(coords),
+            hintContent: JSON.stringify(coords)
         },
         {
             iconLayout: 'default#image',
@@ -42,20 +42,24 @@ export const newPoint = e => {
             iconImageOffset: [-23, -46],
             draggable: true,
             hideIconOnBalloonOpen: false,
-            balloonContentSize: [130, 69], 
-            balloonColor: "#cccccc", 
-            balloonShadow: true,
             balloonOffset: [0, -45]
         }    
     );
+}
+
+/* Работа с точками на карте */
+export const newPoint = e => {
+    // Добавление метки по адресу клика
+    const coordinates = e.get("coords");
+    const newPlacemark = createPlacemark(coordinates);
     placemarkRef.current = newPlacemark;
     mapRef.current.geoObjects.add(placemarkRef.current);
     placemarkRef.current.events.add("dragend", function () {
         getAddress(placemarkRef.current.geometry.getCoordinates());
     });
-    getAddress(coords);
+    getAddress(coordinates);
 
-    //Удаление точки
+    // Удаление метки
     placemarkRef.current.events.add('contextmenu', function(e) {
         var thisPlacemark = e.get('target');
         mapRef.current.geoObjects.remove(thisPlacemark);
@@ -79,32 +83,39 @@ function getPolygonCoords(coordsArr2) {
     if (!stateMonitor2.drawing) newPolygon();
 };
 
-// Работа с полилиниями на карте
-export const newPolyline = () => {
-    
-    if (stateMonitor2) {
-        polygonRef.current.editor.stopDrawing();
-        polygonRef.current.editor.stopEditing();
-    }
+function objStateCheck() {
     if (stateMonitor1) {
         polylineRef.current.editor.stopDrawing();
         polylineRef.current.editor.stopEditing();
     }
+    if (stateMonitor2) {
+        polygonRef.current.editor.stopDrawing();
+        polygonRef.current.editor.stopEditing();
+    }
+}
 
-    const newPolyline = new ymaps.current.Polyline([], 
+// Создание полилинии
+function createPolyline(maxPoints, color) {
+    return new ymaps.current.Polyline([], 
         {
             balloonContentHeader: 'Полилиния',
             balloonContentBody: 'Длина: [value]',
         },
         {
             editorDrawingCursor: "crosshair",
-            editorMaxPoints: 100,
-            fillColor: "#0bbcc9",
-            strokeColor: "#0bbcc9",
+            editorMaxPoints: maxPoints,
+            fillColor: color,
+            strokeColor: color,
             strokeWidth: 8,
             draggable: true
         }
     );
+}
+
+/* Работа с полилиниями на карте */
+export const newPolyline = () => {
+    objStateCheck();
+    const newPolyline = createPolyline(100, "#0bbcc9");
     polylineRef.current = newPolyline;
     mapRef.current.geoObjects.add(polylineRef.current);
 
@@ -113,26 +124,16 @@ export const newPolyline = () => {
         getPolylineCoords(polylineRef.current.geometry.getCoordinates());
     });
 
-    //Удаление полилинии
+    // Удаление полилинии
     polylineRef.current.events.add('contextmenu', function(e) {
         var thisPolyline = e.get('target');
         mapRef.current.geoObjects.remove(thisPolyline);
     });
 };
 
-// Работа с полигонами на карте
-export const newPolygon = () => {
-
-    if (stateMonitor1) {
-        polylineRef.current.editor.stopDrawing();
-        polylineRef.current.editor.stopEditing();
-    }
-    if (stateMonitor2) {
-        polygonRef.current.editor.stopDrawing();
-        polygonRef.current.editor.stopEditing();
-    }
-    
-    const newPolygon = new ymaps.current.Polygon([], 
+// Создание полигона
+function createPolygon() {
+    return new ymaps.current.Polygon([], 
         {
             balloonContentHeader: 'Полигон',
             balloonContentBody: 'Периметр: [value] Площадь: [value]',
@@ -146,7 +147,12 @@ export const newPolygon = () => {
             draggable: true
         }
     );
+}
 
+/* Работа с полигонами на карте */
+export const newPolygon = () => {
+    objStateCheck();
+    const newPolygon = createPolygon();
     polygonRef.current = newPolygon;
     mapRef.current.geoObjects.add(polygonRef.current);
 
@@ -155,24 +161,26 @@ export const newPolygon = () => {
         getPolygonCoords(polygonRef.current.geometry.getCoordinates());
     });
 
-    //Удаление полигона
+    // Удаление полигона
     polygonRef.current.events.add('contextmenu', function(e) {
         var thisPolygon = e.get('target');
         mapRef.current.geoObjects.remove(thisPolygon);
     });
 };
 
-// Рендеринг карты
+// Инструмент вычисления расстояния
+/*
+function distanceCalcTool() {
+    const newPolyline = createPolyline(2, "#68ea1e");
+    polylineRef.current = newPolyline;
+    mapRef.current.geoObjects.add(polylineRef.current);
+}
+*/
+ 
 export default function Map1() {
-    
-    // Переход в режим добавления точек нажатием ESC
+    /* Переход в режим добавления точек нажатием ESC */
     const escFunction = useCallback((event) => {
-        if (event.keyCode === 27) {
-            polylineRef.current.editor.stopDrawing();
-            polylineRef.current.editor.stopEditing();
-            polygonRef.current.editor.stopDrawing();
-            polygonRef.current.editor.stopEditing();
-        }
+        if (event.keyCode === 27) objStateCheck();
     }, []);
     
     useEffect(() => {
@@ -180,13 +188,14 @@ export default function Map1() {
         return () => {document.removeEventListener("keydown", escFunction, false);};
     }, []);
 
+    /* Рендеринг карты */
     return (
         <div className="map-size map-container">
             <YMaps>
                 <Map
                     className = "map-size map-mode"
                     modules = {["Placemark", "Polyline", "Polygon", "geocode", "geoObject.addon.balloon",
-                        "geoObject.addon.editor", "Monitor"]}
+                        "geoObject.addon.editor", "Monitor", "geoObject.addon.hint"]}
                     instanceRef = {mapRef}
                     onLoad = {(ymapsInstance) => (ymaps.current = ymapsInstance)}
                     state = {mapState} 
