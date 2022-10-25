@@ -1,6 +1,6 @@
 /* ---------------- Navbar and burger menu ------------------ */
 nav {
-    width: 100%;
+    width: 32%;
     height: 32px;
 
     display: flex;
@@ -21,16 +21,21 @@ nav {
 }
 .content_button{
     color: whitesmoke;
-	font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font: bold;
+	font-family: 'Noto Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    
     background: rgba(65, 63, 63);
     border: none;
-    font-size: 16px;
+    font-size: 1rem;
     padding-bottom: 3px ;
+    padding-top: 10px;
     padding-left: 0px;
     cursor: pointer;
     text-decoration: none;
     transition: 1.3s;
+    max-width: 75%;
+    text-align: left;
+    
   }
   .content_button:after {
     display: block; 
@@ -46,7 +51,7 @@ width: 100%;
 
     
 .menu_content{
-    padding: 0;
+    padding-top: 5px;
     padding-left: 4px;
     
     width: 100%;
@@ -70,7 +75,7 @@ width: 100%;
     background-color: rgba(65, 63, 63);
     position:absolute;
     
-    margin-top: 58px;
+    margin-top: 6vh;
 
     top: 0;
     z-index: 1;
@@ -109,3 +114,15 @@ width: 100%;
     transform: rotate(0) translate(0);
     transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s;
 }
+.material-icons{
+    padding-left: 4px;
+    font-size: 1rem;
+    vertical-align:middle;
+  
+  
+  }
+  .material-symbols-outlined{
+    padding-left: 4px;
+    font-size: 1rem;
+    vertical-align:middle;
+  }

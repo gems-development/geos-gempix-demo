@@ -18,6 +18,7 @@
 }
 .closed{
     animation: fadeOutFromBlock 0.5s ease-in-out;   
+    
 }
 @keyframes fadeOutFromBlock {
     0% {
@@ -29,17 +30,43 @@
     }
   }
   .ul{
-    list-style-type:circle
+    list-style-type: circle;
   }
+
+  .MainBtn{
+    color: whitesmoke;
+	  font-family: 'Noto Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    background: rgba(65, 63, 63);
+    border: none;
+    font-size: 1rem;
+    padding-bottom: 3px ;
+    padding-left: 0;
+    cursor: pointer;
+    max-width: 90%;
+    text-align: left;
+  }
+  .MainBtn:after {
+    display: block; 
+    content: ""; 
+    height: 2px;
+    width: 0%;
+    background-color: whitesmoke;
+    transition: width 0.4s ease-in-out;
+    }
+    .MainBtn:hover:after {
+      width: 100%;
+      }
 
   .DropBtn{
     color: whitesmoke;
-	font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background: rgba(65, 63, 63);
     border: none;
-    font-size: 16px;
+    font-size: 0.9rem;
     padding-bottom: 3px ;
-    padding-left: 0;
+    padding-left: 5px;
     cursor: pointer;
   }
   .DropBtn:after {
@@ -53,3 +80,4 @@
     .DropBtn:hover:after {
 width: 100%;
 }
+

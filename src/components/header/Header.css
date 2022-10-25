@@ -1,0 +1,41 @@
+header {
+	width: 100%;
+	background: #333;
+    color: whitesmoke;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+	height: 6vh;
+	z-index: 4;
+	box-shadow:inset 0 -2px 2px rgb(17, 17, 17);
+    display:flex;
+	justify-content:space-between;
+}
+
+.links{
+	font-size: 200%;
+	margin-top: 2.5vh;
+
+	margin-bottom: 0;
+
+    padding-bottom: 0;
+	display: flex;
+	justify-content:flex-end;
+	z-index: 3;
+
+}
+.link{
+	display: inline-block;
+	vertical-align: top;
+	padding-left: 5px;
+	z-index: 3;
+}
+.title {
+	font-size: 380%;
+	z-index: 3;
+    text-align: center;
+    text-decoration: none;
+    color: whitesmoke;
+    padding-right: 50%;
+}
+.title:visited {
+    color: whitesmoke;
+  }
