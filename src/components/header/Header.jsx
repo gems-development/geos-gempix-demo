@@ -3,6 +3,7 @@ import React from "react";
 import "./Header.css"
 
 import {removeAllObjects} from '../workArea/Map.js';
+import {useCalcTool} from '../workArea/Map.js';
 
 import vkLogo from "../../assets/img/vkLogo.png";
 import ytLogo from "../../assets/img/YtLogo.png";
@@ -10,9 +11,13 @@ import gemsLogo from "../../assets/img/gemsLogo.png";
 
 import Menu from'../ui/burgerMenu/BurgerMenu.jsx';
 
-const items = [{value:"Измерить расстояние между объектами", onClick: removeAllObjects, icon:"square_foot"},{value:"Ещё кнопка", onClick: removeAllObjects},{value:"Ещё кнопка", onClick: removeAllObjects}]
+function Header() {
 
-function Header(){
+const items = [
+    { value: "Измерить расстояние между объектами", onClick: useCalcTool, icon: "square_foot" },
+     { value: "Ещё кнопка", onClick: removeAllObjects }, 
+     { value: "Ещё кнопка", onClick: removeAllObjects }
+] 
     
 return(
     <header>

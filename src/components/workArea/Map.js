@@ -1,7 +1,8 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback, useState } from 'react';
 import { YMaps, Map, ZoomControl } from 'react-yandex-maps';
 import './Map.css';
 import placemarkIcon from '../../assets/img/placemarkIcon.png';
+import axios from 'axios';
 
 const mapState = {
     center: [54.98517806972585,73.3714099999999],
@@ -169,13 +170,36 @@ export const newPolygon = () => {
 };
 
 // Инструмент вычисления расстояния
-/*
-function distanceCalcTool() {
-    const newPolyline = createPolyline(2, "#68ea1e");
-    polylineRef.current = newPolyline;
-    mapRef.current.geoObjects.add(polylineRef.current);
-}
+export const useCalcTool = () => {
+    /*
+    const [appState, setAppState] = useState(null);
+
+    useEffect(() => {
+        axios.get('http://localhost:5148/WeatherForecast').then(response => {
+            const data = response.data;
+            setAppState(data);
+        },
+        reject => {
+            console.log(reject);
+        });
+    }, []);
+    return appState;
 */
+    /*
+    axios.get('http://localhost:5148/WeatherForecast').then(response => {
+        console.log(response.data);
+    },
+    reject => {
+        console.log(reject);
+    });
+    */
+    axios.post('http://localhost:5148/Distance', [{x: 0, y: 0}, {x: 10, y: 10}]).then(response => {
+        console.log(response.data);
+    },
+    reject => {
+        console.log(reject);
+    });
+}
  
 export default function Map1() {
     /* Переход в режим добавления точек нажатием ESC */
