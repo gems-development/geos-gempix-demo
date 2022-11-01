@@ -2,6 +2,7 @@ import React, {useEffect, useCallback, useState } from 'react';
 import { YMaps, Map, ZoomControl } from 'react-yandex-maps';
 import './Map.css';
 import placemarkIcon from '../../assets/img/placemarkIcon.png';
+import selPlacemarkIcon from '../../assets/img/selPlacemarkIcon.png';
 import axios from 'axios';
 
 const mapState = {
@@ -20,6 +21,7 @@ const placemarkRef = React.createRef(null);
 const mapRef = React.createRef(null);
 const polylineRef = React.createRef(null);
 const polygonRef = React.createRef(null);
+const selectedObjects = [];
 
 // Обратное геокодирование
 const getAddress = (coords) => {
@@ -32,9 +34,9 @@ const getAddress = (coords) => {
 function createPlacemark(coords) {
     return new ymaps.current.Placemark(coords, 
         {
-            balloonContentHeader: 'Точка',
-            balloonContentBody: JSON.stringify(coords),
-            hintContent: JSON.stringify(coords)
+            //balloonContentHeader: 'Точка',
+            //balloonContentBody: JSON.stringify(coords),
+            //hintContent: JSON.stringify(coords)
         },
         {
             iconLayout: 'default#image',
@@ -55,6 +57,27 @@ export const newPoint = e => {
     const newPlacemark = createPlacemark(coordinates);
     placemarkRef.current = newPlacemark;
     mapRef.current.geoObjects.add(placemarkRef.current);
+
+    placemarkRef.current.events.add("click", function (e) {
+        if (selectedObjects.length == 2) {
+            console.log("Array is full!");
+            return;
+        }
+        else {
+            var thisPlacemark = e.get('target');
+            thisPlacemark.options.set({
+                iconLayout: 'default#image',
+                iconImageHref: selPlacemarkIcon,
+                iconImageSize: [46, 46],
+                iconImageOffset: [-23, -46],
+                draggable: true,
+                hideIconOnBalloonOpen: false,
+                balloonOffset: [0, -45]
+            });
+            selectedObjects.push(thisPlacemark);
+        }    
+    });
+
     placemarkRef.current.events.add("dragend", function () {
         getAddress(placemarkRef.current.geometry.getCoordinates());
     });
@@ -171,9 +194,23 @@ export const newPolygon = () => {
 
 // Инструмент вычисления расстояния
 export const useCalcTool = () => {
+
+    const request = {
+        firstObject: [selectedObjects[0].geometry.getCoordinates()],
+        secondObject: [selectedObjects[1].geometry.getCoordinates()]
+    }
+
+    axios.post('http://localhost:5148/Distance', request).then(response => {
+        console.log(response.data);
+    },
+    reject => {
+        console.log(reject);
+    });
+
+    selectedObjects.splice(0, selectedObjects.length);
+
     /*
     const [appState, setAppState] = useState(null);
-
     useEffect(() => {
         axios.get('http://localhost:5148/WeatherForecast').then(response => {
             const data = response.data;
@@ -184,8 +221,7 @@ export const useCalcTool = () => {
         });
     }, []);
     return appState;
-*/
-    /*
+    
     axios.get('http://localhost:5148/WeatherForecast').then(response => {
         console.log(response.data);
     },
@@ -193,12 +229,6 @@ export const useCalcTool = () => {
         console.log(reject);
     });
     */
-    axios.post('http://localhost:5148/Distance', [{x: 0, y: 0}, {x: 10, y: 10}]).then(response => {
-        console.log(response.data);
-    },
-    reject => {
-        console.log(reject);
-    });
 }
  
 export default function Map1() {
@@ -218,8 +248,11 @@ export default function Map1() {
             <YMaps>
                 <Map
                     className = "map-size map-mode"
-                    modules = {["Placemark", "Polyline", "Polygon", "geocode", "geoObject.addon.balloon",
-                        "geoObject.addon.editor", "Monitor", "geoObject.addon.hint"]}
+                    modules = {[
+                        "Placemark", "Polyline", "Polygon", "geocode", "geoObject.addon.balloon",
+                        "geoObject.addon.editor", "Monitor", "geoObject.addon.hint", "GeoObjectCollection",
+                        "ObjectManager"
+                    ]}
                     instanceRef = {mapRef}
                     onLoad = {(ymapsInstance) => (ymaps.current = ymapsInstance)}
                     state = {mapState} 

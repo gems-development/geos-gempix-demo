@@ -11,6 +11,7 @@ builder.Services.AddCors(options =>
         "default", 
         policyBuilder => policyBuilder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
         ));
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
