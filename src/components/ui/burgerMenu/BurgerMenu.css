@@ -71,14 +71,22 @@ width: 100%;
 }
 .menu {
     width: 12%;
+    min-width: 220px;
     height: 90vh;
     background-color: rgba(65, 63, 63);
     position:absolute;
     
-    margin-top: 6vh;
+    margin-top: 60px;
 
     top: 0;
     z-index: 1;
+}
+@media (max-width: 767px) {
+    .menu.clicked{
+        transform: translateX(-100%);
+        transition: all 0.3s;
+    }
+    
 }
 
 /* ------------- sliding menu ------------------ */

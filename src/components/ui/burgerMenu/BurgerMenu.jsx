@@ -8,6 +8,8 @@ const Menu = ({items}) => {
     const [menu_class, setMenuClass] = useState("menu hidden")
     const [isMenuClicked, setIsMenuClicked] = useState(false)
 
+    const mediaQuery = window.matchMedia('(min-width: 768px)')
+
     // toggle burger menu change
     const updateMenu = () => {
         if(!isMenuClicked) {
@@ -40,7 +42,7 @@ const Menu = ({items}) => {
                     </li>
                     {items.map(item=>
                         <li>
-                            <button className="content_button" onClick ={item.onClick}>{item.value}</button>
+                            <button className="content_button" onClick ={item.onClick} >{item.value}</button>
                             <span class="material-icons">{item.icon}</span>
                         </li>
                         )}
