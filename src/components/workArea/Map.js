@@ -195,19 +195,35 @@ export const newPolygon = () => {
 // Инструмент вычисления расстояния
 export const useCalcTool = () => {
 
-    const request = {
-        firstObject: [selectedObjects[0].geometry.getCoordinates()],
-        secondObject: [selectedObjects[1].geometry.getCoordinates()]
+    if (selectedObjects.length == 0) {
+        alert("Выберите, пожалуйста, объекты для рассчёта!")
+        return;
     }
-
-    axios.post('http://localhost:5148/Distance', request).then(response => {
-        console.log(response.data);
-    },
-    reject => {
-        console.log(reject);
-    });
-
-    selectedObjects.splice(0, selectedObjects.length);
+    else {
+        const request = {
+            firstObject: [selectedObjects[0].geometry.getCoordinates()],
+            secondObject: [selectedObjects[1].geometry.getCoordinates()]
+        }
+    
+        axios.post('http://localhost:5148/Distance', request).then(response => {
+            alert(response.data);
+        },
+        reject => {
+            console.log(reject);
+        });
+    
+        selectedObjects.splice(0, selectedObjects.length);
+    
+        placemarkRef.current.options.set({
+            iconLayout: 'default#image',
+            iconImageHref: placemarkIcon,
+            iconImageSize: [46, 46],
+            iconImageOffset: [-23, -46],
+            draggable: true,
+            hideIconOnBalloonOpen: false,
+            balloonOffset: [0, -45]
+        });
+    }
 
     /*
     const [appState, setAppState] = useState(null);

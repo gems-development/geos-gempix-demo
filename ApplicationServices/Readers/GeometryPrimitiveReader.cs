@@ -1,32 +1,13 @@
-using ApplicationServices.Converters;
 using ApplicationServices.Interfaces;
 using GeometryModels;
 using GeometryModels.Models;
 
-namespace ApplicationServices;
+namespace ApplicationServices.Readers;
 
-public class GeometryPrimitiveReader
+internal class GeometryPrimitiveReader : IGeometryPrimitiveReader
 {
-    private readonly ICoordinateConverter _coordinateConverter;
-
-    public GeometryPrimitiveReader(ICoordinateConverter coordinateConverter)
-    {
-        _coordinateConverter = coordinateConverter;
-    }
-
-    private List<Point> PreProcess(IEnumerable<IEnumerable<double>> source)
-    {
-        var result = new List<Point>();
-        foreach (var item in source)
-        {
-            result.Add(_coordinateConverter.Convert(new Point(item.First(), item.Last())));
-        }
-        return result;
-    }
-
     public IGeometryPrimitive Read(IEnumerable<IEnumerable<double>> source)
     {
-        var convertedPoints = PreProcess(source);
         var innerFirst = source.FirstOrDefault();
         var innerLast = source.LastOrDefault();
         IGeometryPrimitive geometryPrimitive = null!;
