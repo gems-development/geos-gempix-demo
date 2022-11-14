@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import "./DropdownMenu.css"
-import 
+
 import {removeAllObjects} from '../../workArea/Map.js';
 import {newPolyline} from '../../workArea/Map.js';
 import {newPolygon} from '../../workArea/Map.js';
