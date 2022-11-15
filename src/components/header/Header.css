@@ -62,8 +62,8 @@ header {
 	.links{
 		display: none;
 	}
-	.header{
-		justify-content:none;	
+	header{
+		justify-content:left;	
 	}
 		
 }
