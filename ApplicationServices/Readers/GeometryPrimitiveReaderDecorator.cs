@@ -20,8 +20,9 @@ internal class GeometryPrimitiveReaderDecorator : IGeometryPrimitiveReader
     public IGeometryPrimitive Read(IEnumerable<IEnumerable<IEnumerable<double>>> source)
     {
         var convertedPoints = PreProcess(source);
-        return _geometryPrimitiveReader.Read(convertedPoints
-            .Select(item => new []{new []{item.X, item.Y}}));
+        var recoveredSource = new []{convertedPoints
+            .Select(item => new []{item.X, item.Y}).ToArray()};
+        return _geometryPrimitiveReader.Read(recoveredSource);
     }
     
     private List<Point> PreProcess(IEnumerable<IEnumerable<IEnumerable<double>>> source)

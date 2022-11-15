@@ -242,10 +242,14 @@ export const useCalcTool = () => {
     else {
         coord1 = selectedObjects[0].geometry.getType() === 'Point'
             ?[[selectedObjects[0].geometry.getCoordinates()]]
-            :[selectedObjects[0].geometry.getCoordinates()];
+            :(selectedObjects[0].geometry.getType() === 'LineString'
+                ?[selectedObjects[0].geometry.getCoordinates()]
+                :selectedObjects[0].geometry.getCoordinates());
         coord2 = selectedObjects[1].geometry.getType() === 'Point'
             ?[[selectedObjects[1].geometry.getCoordinates()]]
-            :[selectedObjects[1].geometry.getCoordinates()];
+            :(selectedObjects[1].geometry.getType() === 'LineString'
+                ?[selectedObjects[1].geometry.getCoordinates()]
+                :selectedObjects[1].geometry.getCoordinates());
         
         const request = {
             firstObject: coord1,
