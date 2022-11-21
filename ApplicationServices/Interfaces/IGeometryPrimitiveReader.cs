@@ -2,5 +2,5 @@
 
 public interface IGeometryPrimitiveReader
 {
-    IGeometryPrimitive Read(IEnumerable<IEnumerable<double>> source);
+    IGeometryPrimitive Read(IEnumerable<IEnumerable<IEnumerable<double>>> source);
 }

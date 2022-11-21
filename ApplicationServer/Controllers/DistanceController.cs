@@ -1,10 +1,7 @@
 ﻿using ApplicationServer.Dto;
 using Microsoft.AspNetCore.Mvc;
-using ApplicationServer.Model;
-using ApplicationServices;
 using ApplicationServices.Interfaces;
-using ApplicationServices.Readers;
-using static GeometryModels.Extensions.DistanceExtencion;
+using GeometryModels.Extensions;
 
 namespace ApplicationServer.Controllers
 {
@@ -33,7 +30,7 @@ namespace ApplicationServer.Controllers
             var geometryPrimitive1 = _geometryPrimitiveReader.Read(request.FirstObject);
             var geometryPrimitive2 = _geometryPrimitiveReader.Read(request.SecondObject);
             
-            var distance = GetDistance(geometryPrimitive1, geometryPrimitive2);
+            var distance = GeometryModels.Extensions.DistanceExtension.GetDistance(geometryPrimitive1, geometryPrimitive2);
             return Ok(distance);
         }
     }

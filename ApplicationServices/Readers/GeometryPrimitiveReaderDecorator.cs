@@ -17,17 +17,18 @@ internal class GeometryPrimitiveReaderDecorator : IGeometryPrimitiveReader
         _geometryPrimitiveReader = geometryPrimitiveReader;
     }
 
-    public IGeometryPrimitive Read(IEnumerable<IEnumerable<double>> source)
+    public IGeometryPrimitive Read(IEnumerable<IEnumerable<IEnumerable<double>>> source)
     {
         var convertedPoints = PreProcess(source);
-        return _geometryPrimitiveReader.Read(convertedPoints
-            .Select(item => new []{item.X, item.Y}));
+        var recoveredSource = new []{convertedPoints
+            .Select(item => new []{item.X, item.Y}).ToArray()};
+        return _geometryPrimitiveReader.Read(recoveredSource);
     }
     
-    private List<Point> PreProcess(IEnumerable<IEnumerable<double>> source)
+    private List<Point> PreProcess(IEnumerable<IEnumerable<IEnumerable<double>>> source)
     {
         var result = new List<Point>();
-        foreach (var item in source)
+        foreach (var item in source.First())
         {
             result.Add(_coordinateConverter.Convert(new Point(item.First(), item.Last())));
         }
