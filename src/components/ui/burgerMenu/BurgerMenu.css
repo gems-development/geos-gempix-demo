@@ -82,10 +82,7 @@ width: 100%;
     z-index: 1;
 }
 @media (max-width: 767px) {
-    .menu.clicked{
-        transform: translateX(-100%);
-        transition: all 0.3s;
-    }
+    
     
 }
 
@@ -134,3 +131,23 @@ width: 100%;
     font-size: 1rem;
     vertical-align:middle;
   }
+.links__menu{
+
+    text-align: center;
+    position:absolute; 
+	bottom:2px; 
+
+    
+}
+.link__menu{
+    display: inline-block;
+	vertical-align: top;
+	padding-left: 31px;
+	z-index: 3;
+
+}
+@media (min-width: 540px){
+    .links__menu{
+        display: none;
+    }
+}

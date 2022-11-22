@@ -10,7 +10,7 @@ public class GeometryReaderTest
     public void SourceDataIsPoint_PointResult()
     {
         // Arrange
-        var source = new[]{new[] {0.0, 0.0}};
+        var source = new[] {new[]{new[] {0.0, 0.0}}};
         var geometryPrimitiveReader = new GeometryPrimitiveReader();
         
         // Act
@@ -24,7 +24,7 @@ public class GeometryReaderTest
     public void SourceDataIsPolyline_LineResult()
     {
         // Arrange
-        var source = new[]{new[] {0.0, 0.0}, new []{5.0, 5.0}};
+        var source = new[] {new[]{new[]{0.0, 0.0}, new []{5.0, 5.0}}};
         var geometryPrimitiveReader = new GeometryPrimitiveReader();
         
         // Act
@@ -38,7 +38,7 @@ public class GeometryReaderTest
     public void SourceDataIsPolygon_PolygonResult()
     {
         // Arrange
-        var source = new[]{new[] {0.0, 0.0}, new []{5.0, 5.0}, new []{0.0, 0.0}};
+        var source = new[] {new[]{new[]{0.0, 0.0}, new []{5.0, 5.0}, new []{0.0, 0.0}}};
         var geometryPrimitiveReader = new GeometryPrimitiveReader();
         
         // Act
