@@ -1,0 +1,43 @@
+
+.info-area {
+    height: 220px;
+    width: 220px;
+    background-color: rgba(65, 63, 63);
+    position: absolute;
+    
+    right: 0;
+    bottom:4vh;
+    box-shadow:inset 2px 2px 2px rgb(17, 17, 17);
+    z-index: 1;
+}
+.information{
+    color: whitesmoke;
+    padding: 5px;
+    
+}
+.hidden-i {
+    transform: translateX(100%);
+    transition: all 0.3s;
+    display: none;
+}
+
+.visible-i {
+    transform: translateX();
+    transition: all 0.3s;
+}
+@media (max-width: 445px){
+    .info-area{
+        width: 100%;
+    }
+}
+
+.closeBtn{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    cursor: pointer; 
+}
+.material-icons{
+    color: whitesmoke;
+    
+}

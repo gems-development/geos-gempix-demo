@@ -4,7 +4,7 @@ import './Map.css';
 import placemarkIcon from '../../assets/img/placemarkIcon.png';
 import selPlacemarkIcon from '../../assets/img/selPlacemarkIcon.png';
 import axios from 'axios';
-import {balloon} from '../ui/balloon/balloon'
+import {Info} from '../ui/Info/Info'
 
 const mapState = {
     center: [54.98517806972585,73.3714099999999],
@@ -207,7 +207,8 @@ export const useCalcTool = () => {
         }
     
         axios.post('http://localhost:5148/Distance', request).then(response => {
-            balloon(selectedObjects[1], response.data);
+          //  Info(selectedObjects[1], response.data);
+            
         },
         reject => {
             console.log(reject);
