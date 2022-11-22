@@ -2,6 +2,7 @@
 using ApplicationServices.Converters;
 using ApplicationServices.Interfaces;
 using ApplicationServices.Readers;
+using ApplicationServices.Service;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -11,5 +12,6 @@ public static class ServiceCollectionExtension
         services
             .AddScoped<GeometryPrimitiveReader>()
             .AddScoped<IGeometryPrimitiveReader, GeometryPrimitiveReaderDecorator>()
-            .AddScoped<ICoordinateConverter, GeodeticTo3857CoordinateConverter>();
+            .AddScoped<ICoordinateConverter, GeodeticTo3857CoordinateConverter>()
+            .AddScoped<SpatialRelationsService>();
 }

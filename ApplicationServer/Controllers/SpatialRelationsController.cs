@@ -4,8 +4,7 @@ using ApplicationServer.Model;
 using ApplicationServices;
 using ApplicationServices.Interfaces;
 using ApplicationServices.Readers;
-using static GeometryModels.Extensions.InsiderExtencion;
-using static GeometryModels.Extensions.IntersectorExtencion;
+using ApplicationServices.Service;
 
 namespace ApplicationServer.Controllers
 {
@@ -13,17 +12,20 @@ namespace ApplicationServer.Controllers
     {
         private readonly ILogger<SpatialRelationsController> _logger;
         private readonly IGeometryPrimitiveReader _geometryPrimitiveReader;
+        private readonly SpatialRelationsService _spatialRelationsService;
 
         public SpatialRelationsController(
             ILogger<SpatialRelationsController> logger,
-            IGeometryPrimitiveReader geometryPrimitiveReader)
+            IGeometryPrimitiveReader geometryPrimitiveReader, 
+            SpatialRelationsService spatialRelationsService)
         {
             _logger = logger;
             _geometryPrimitiveReader = geometryPrimitiveReader;
+            _spatialRelationsService = spatialRelationsService;
         }
 
         [HttpPost(Name = "GetRelations")]
-        public IActionResult Get([FromBody] RelationRequestDto request)
+        public IActionResult Get([FromBody] SpatialRequestDto request)
         {
             if (request.FirstObject is null || request.SecondObject is null)
             {
@@ -32,12 +34,10 @@ namespace ApplicationServer.Controllers
             var geometryPrimitive1 = _geometryPrimitiveReader.Read(request.FirstObject);
             var geometryPrimitive2 = _geometryPrimitiveReader.Read(request.SecondObject);
 
+            var spatialRelationsInfo = 
+                _spatialRelationsService.GetSpatialRelationsInfo(geometryPrimitive1, geometryPrimitive2);
 
-
-            
-            return Ok();
+            return Ok((SpatialRelationsInfoDto)spatialRelationsInfo);
         }
-
-
     }
 }

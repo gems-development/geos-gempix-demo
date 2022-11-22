@@ -1,7 +1,9 @@
-﻿namespace ApplicationServer.Dto;
+﻿using ApplicationServices.Model;
 
-public class SpatialRelationsInfo
+namespace ApplicationServer.Dto;
+
+public class SpatialRelationsInfoDto : SpatialRelationsInfo
 {
-    public bool Intersecting { get; set; }
-    public bool Inside { get; set; }
+    public new bool Intersecting { get; set; }
+    public new bool Inside { get; set; }
 }
