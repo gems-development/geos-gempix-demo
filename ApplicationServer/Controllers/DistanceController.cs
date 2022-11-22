@@ -24,7 +24,7 @@ namespace ApplicationServer.Controllers
         }
 
         [HttpPost(Name = "GetDistance")]
-        public IActionResult Get([FromBody] DistanceRequestDto request)
+        public IActionResult Get([FromBody] RelationRequestDto request)
         {
             if (request.FirstObject is null || request.SecondObject is null)
             {
@@ -33,8 +33,9 @@ namespace ApplicationServer.Controllers
             var geometryPrimitive1 = _geometryPrimitiveReader.Read(request.FirstObject);
             var geometryPrimitive2 = _geometryPrimitiveReader.Read(request.SecondObject);
             
-            var distance = GetDistance(geometryPrimitive1, geometryPrimitive2);
-            return Ok(distance);
+
+            
+            return Ok();
         }
     }
 }
