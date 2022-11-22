@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ApplicationServices.Interfaces;
 using GeometryModels.Extensions;
+using GeometryModels.Models;
 
 namespace ApplicationServer.Controllers
 {
@@ -21,17 +22,21 @@ namespace ApplicationServer.Controllers
         }
 
         [HttpPost(Name = "GetDistance")]
-        public IActionResult Get([FromBody] DistanceRequestDto request)
+        public IActionResult Get([FromBody] SpatialRequestDto request)
         {
+            var distanceResponse = new DistanceResponseDto();
             if (request.FirstObject is null || request.SecondObject is null)
             {
                 return BadRequest();
             }
             var geometryPrimitive1 = _geometryPrimitiveReader.Read(request.FirstObject);
             var geometryPrimitive2 = _geometryPrimitiveReader.Read(request.SecondObject);
+            var distance = DistanceExtension.GetDistance(geometryPrimitive1, geometryPrimitive2);
             
-            var distance = GeometryModels.Extensions.DistanceExtension.GetDistance(geometryPrimitive1, geometryPrimitive2);
-            return Ok(distance);
+            distanceResponse.Distance = distance;
+            distanceResponse.Line = ShortestLineExtension.GetShortestLine(geometryPrimitive1, geometryPrimitive2);
+            
+            return Ok(distanceResponse);
         }
     }
 }

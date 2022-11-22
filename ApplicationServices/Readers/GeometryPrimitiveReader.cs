@@ -30,7 +30,7 @@ internal class GeometryPrimitiveReader : IGeometryPrimitiveReader
             var points = source.First()
                 .Select(item => new Point(item.First(), item.Last()))
                 .ToList();
-            geometryPrimitive = new Polygon(points, null);
+            geometryPrimitive = new Polygon(points);
         }
         return geometryPrimitive;
     }

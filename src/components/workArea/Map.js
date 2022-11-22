@@ -283,27 +283,6 @@ export const useCalcTool = () => {
         
         selectedObjects.splice(0, selectedObjects.length);
     }
-
-    /*
-    const [appState, setAppState] = useState(null);
-    useEffect(() => {
-        axios.get('http://localhost:5148/WeatherForecast').then(response => {
-            const data = response.data;
-            setAppState(data);
-        },
-        reject => {
-            console.log(reject);
-        });
-    }, []);
-    return appState;
-    
-    axios.get('http://localhost:5148/WeatherForecast').then(response => {
-        console.log(response.data);
-    },
-    reject => {
-        console.log(reject);
-    });
-    */
 }
  
 export default function Map1() {
