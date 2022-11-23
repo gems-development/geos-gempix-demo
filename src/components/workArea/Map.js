@@ -14,6 +14,7 @@ var coords1 = [];
 var coords2 = [];
 var stateMonitor1;
 var stateMonitor2;
+const selectedObjects = [];
 
 // Хуки
 const ymaps = React.createRef(null);
@@ -21,7 +22,6 @@ const placemarkRef = React.createRef(null);
 const mapRef = React.createRef(null);
 const polylineRef = React.createRef(null);
 const polygonRef = React.createRef(null);
-const selectedObjects = [];
 
 // Обратное геокодирование
 const getAddress = (coords) => {
@@ -32,12 +32,7 @@ const getAddress = (coords) => {
 
 // Создание точки
 function createPlacemark(coords) {
-    return new ymaps.current.Placemark(coords, 
-        {
-            //balloonContentHeader: 'Точка',
-            //balloonContentBody: JSON.stringify(coords),
-            //hintContent: JSON.stringify(coords)
-        },
+    return new ymaps.current.Placemark(coords, {},
         {
             iconLayout: 'default#image',
             iconImageHref: placemarkIcon,
@@ -50,14 +45,20 @@ function createPlacemark(coords) {
     );
 }
 
-/* Работа с точками на карте */
+/* Работа с метками на карте */
 export const newPoint = e => {
-    // Добавление метки по адресу клика
+    // Отрисовка метки по адресу клика
     const coordinates = e.get("coords");
     const newPlacemark = createPlacemark(coordinates);
     placemarkRef.current = newPlacemark;
     mapRef.current.geoObjects.add(placemarkRef.current);
 
+    placemarkRef.current.events.add("dragend", function () {
+        getAddress(placemarkRef.current.geometry.getCoordinates());
+    });
+    getAddress(coordinates);
+
+    // Выделение метки
     placemarkRef.current.events.add("click", function (e) {
         if (selectedObjects.length == 2) {
             console.log("Array is full!");
@@ -65,23 +66,10 @@ export const newPoint = e => {
         }
         else {
             var thisPlacemark = e.get('target');
-            thisPlacemark.options.set({
-                iconLayout: 'default#image',
-                iconImageHref: selPlacemarkIcon,
-                iconImageSize: [46, 46],
-                iconImageOffset: [-23, -46],
-                draggable: true,
-                hideIconOnBalloonOpen: false,
-                balloonOffset: [0, -45]
-            });
+            thisPlacemark.options.set({ iconImageHref: selPlacemarkIcon });
             selectedObjects.push(thisPlacemark);
         }    
     });
-
-    placemarkRef.current.events.add("dragend", function () {
-        getAddress(placemarkRef.current.geometry.getCoordinates());
-    });
-    getAddress(coordinates);
 
     // Удаление метки
     placemarkRef.current.events.add('contextmenu', function(e) {
@@ -120,15 +108,10 @@ function objStateCheck() {
 
 // Создание полилинии
 function createPolyline() {
-    return new ymaps.current.Polyline([], 
-        {
-            //balloonContentHeader: 'Полилиния',
-            //balloonContentBody: 'Длина: [value]',
-        },
+    return new ymaps.current.Polyline([], {},
         {
             editorDrawingCursor: "crosshair",
             editorMaxPoints: 100,
-            fillColor: "#0bbcc9",
             strokeColor: "#0bbcc9",
             strokeWidth: 8,
             draggable: true
@@ -139,15 +122,17 @@ function createPolyline() {
 /* Работа с полилиниями на карте */
 export const newPolyline = () => {
     objStateCheck();
+
+    // Отрисовка полилинии
     const newPolyline = createPolyline();
     polylineRef.current = newPolyline;
     mapRef.current.geoObjects.add(polylineRef.current);
-
     polylineRef.current.editor.startDrawing();
     polylineRef.current.editor.events.add("drawingstop", function (e) {
         getPolylineCoords(polylineRef.current.geometry.getCoordinates());
     });
 
+    // Выделение полилинии
     polylineRef.current.events.add("click", function (e) {
         if (selectedObjects.length == 2) {
             console.log("Array is full!");
@@ -155,14 +140,7 @@ export const newPolyline = () => {
         }
         else {
             var thisPolyline = e.get('target');
-            thisPolyline.options.set({
-                editorDrawingCursor: "crosshair",
-                editorMaxPoints: 100,
-                fillColor: "#f44336",
-                strokeColor: "#f44336",
-                strokeWidth: 8,
-                draggable: true
-            });
+            thisPolyline.options.set({ strokeColor: "#f44336" });
             selectedObjects.push(thisPolyline);
         }    
     });
@@ -176,11 +154,7 @@ export const newPolyline = () => {
 
 // Создание полигона
 function createPolygon() {
-    return new ymaps.current.Polygon([], 
-        {
-            //balloonContentHeader: 'Полигон',
-            //balloonContentBody: 'Периметр: [value] Площадь: [value]',
-        },
+    return new ymaps.current.Polygon([], {},
         {
             editorDrawingCursor: "crosshair",
             editorMaxPoints: 100,
@@ -195,15 +169,17 @@ function createPolygon() {
 /* Работа с полигонами на карте */
 export const newPolygon = () => {
     objStateCheck();
+
+    // Отрисовка полигона
     const newPolygon = createPolygon();
     polygonRef.current = newPolygon;
     mapRef.current.geoObjects.add(polygonRef.current);
-
     polygonRef.current.editor.startDrawing();
     polygonRef.current.editor.events.add("drawingstop", function (e) {
         getPolygonCoords(polygonRef.current.geometry.getCoordinates());
     });
 
+    // Выделение полигона
     polygonRef.current.events.add("click", function (e) {
         if (selectedObjects.length == 2) {
             console.log("Array is full!");
@@ -211,14 +187,7 @@ export const newPolygon = () => {
         }
         else {
             var thisPolygon = e.get('target');
-            thisPolygon.options.set({
-                editorDrawingCursor: "crosshair",
-                editorMaxPoints: 100,
-                fillColor: "#b8a7a2aa",
-                strokeColor: "#f44336",
-                strokeWidth: 8,
-                draggable: true
-            });
+            thisPolygon.options.set({ strokeColor: "#f44336" });
             selectedObjects.push(thisPolygon);
         }    
     });
@@ -230,9 +199,21 @@ export const newPolygon = () => {
     });
 };
 
+// Создание и отрисовка линии кратчайшего расстояния
+function shortestLine(geometry) {
+    const shortestLine = createPolyline();
+    shortestLine.options.set(geometry, {},
+        {
+            strokeColor: "#57f909",
+            strokeWidth: 6,
+        }
+    );
+    polylineRef.current = shortestLine;
+    mapRef.current.geoObjects.add(polylineRef.current);
+}
+
 // Инструмент вычисления расстояния
 export const useCalcTool = () => {
-
     var coord1;
     var coord2;
     if (selectedObjects.length == 0) {
@@ -256,31 +237,24 @@ export const useCalcTool = () => {
             secondObject: coord2
         }
     
+        // Отправка запроса на сервер и демонстрация результата клиенту
         axios.post('http://localhost:5148/Distance', request).then(response => {
-            alert(response.data);
+            var geometry = [[response.data.line.point1], [response.data.line.point2]];
+            shortestLine(geometry)
+            alert(response.data.distance);
         },
         reject => {
             console.log(reject);
         });
 
-        // Снятие выделения с объектов
+        // Снятие выделения с выбранных объектов
         for (var i = 0; i < 2; i++) {
             selectedObjects[i].options.set({
-                editorDrawingCursor: "crosshair",
-                editorMaxPoints: 100,
-                fillColor: "#b8a7a2aa",
                 strokeColor: "#0bbcc9",
-                strokeWidth: 8,
-                draggable: true,
-                iconLayout: 'default#image',
-                iconImageHref: placemarkIcon,
-                iconImageSize: [46, 46],
-                iconImageOffset: [-23, -46],
-                hideIconOnBalloonOpen: false,
-                balloonOffset: [0, -45]
+                iconImageHref: placemarkIcon
             });
         }
-        
+        // Очистка массива выбранных объектов
         selectedObjects.splice(0, selectedObjects.length);
     }
 }
