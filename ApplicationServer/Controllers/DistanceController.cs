@@ -12,13 +12,17 @@ namespace ApplicationServer.Controllers
     {
         private readonly ILogger<DistanceController> _logger;
         private readonly IGeometryPrimitiveReader _geometryPrimitiveReader;
+        private readonly IGeometryPrimitiveWriter _geometryPrimitiveWriter;
 
         public DistanceController(
             ILogger<DistanceController> logger, 
-            IGeometryPrimitiveReader geometryPrimitiveReader)
+            IGeometryPrimitiveReader geometryPrimitiveReader,
+            ICoordinateConverter coordinateConverter,
+            IGeometryPrimitiveWriter geometryPrimitiveWriter)
         {
             _logger = logger;
             _geometryPrimitiveReader = geometryPrimitiveReader;
+            _geometryPrimitiveWriter = geometryPrimitiveWriter;
         }
 
         [HttpPost(Name = "GetDistance")]
@@ -34,8 +38,9 @@ namespace ApplicationServer.Controllers
             var distance = DistanceExtension.GetDistance(geometryPrimitive1, geometryPrimitive2);
             
             distanceResponse.Distance = distance;
-            distanceResponse.Line = ShortestLineExtension.GetShortestLine(geometryPrimitive1, geometryPrimitive2);
-            
+            var shortestLine = ShortestLineExtension.GetShortestLine(geometryPrimitive1, geometryPrimitive2);
+            distanceResponse.Line = _geometryPrimitiveWriter.Write(shortestLine);
+
             return Ok(distanceResponse);
         }
     }

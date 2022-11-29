@@ -8,6 +8,8 @@ using ApplicationServices.Service;
 
 namespace ApplicationServer.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class SpatialRelationsController : Controller
     {
         private readonly ILogger<SpatialRelationsController> _logger;
@@ -24,7 +26,7 @@ namespace ApplicationServer.Controllers
             _spatialRelationsService = spatialRelationsService;
         }
 
-        [HttpPost(Name = "GetRelations")]
+        [HttpPost]
         public IActionResult Get([FromBody] SpatialRequestDto request)
         {
             if (request.FirstObject is null || request.SecondObject is null)
@@ -37,7 +39,7 @@ namespace ApplicationServer.Controllers
             var spatialRelationsInfo = 
                 _spatialRelationsService.GetSpatialRelationsInfo(geometryPrimitive1, geometryPrimitive2);
 
-            return Ok((SpatialRelationsInfoDto)spatialRelationsInfo);
+            return Ok(spatialRelationsInfo);
         }
     }
 }

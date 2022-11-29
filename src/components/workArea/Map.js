@@ -200,8 +200,16 @@ export const newPolygon = () => {
 };
 
 // Создание и отрисовка линии кратчайшего расстояния
-function shortestLine(geometry) {
-    const shortestLine = createPolyline();
+function drawShortestLine(geometry) {
+    const shortestLine = new ymaps.current.Polyline(geometry, {},
+        {
+            editorDrawingCursor: "crosshair",
+            editorMaxPoints: 100,
+            strokeColor: "#0bbcc9",
+            strokeWidth: 8,
+            draggable: true
+        }
+    );
     shortestLine.options.set(geometry, {},
         {
             strokeColor: "#57f909",
@@ -213,7 +221,7 @@ function shortestLine(geometry) {
 }
 
 // Инструмент вычисления расстояния
-export const useCalcTool = () => {
+export const distanceCalcTool = () => {
     var coord1;
     var coord2;
     if (selectedObjects.length == 0) {
@@ -239,9 +247,54 @@ export const useCalcTool = () => {
     
         // Отправка запроса на сервер и демонстрация результата клиенту
         axios.post('http://localhost:5148/Distance', request).then(response => {
-            var geometry = [[response.data.line.point1], [response.data.line.point2]];
-            shortestLine(geometry)
+            var geometry = response.data.line;
+            shortestLine(geometry);
             alert(response.data.distance);
+        },
+        reject => {
+            console.log(reject);
+        });
+
+        // Снятие выделения с выбранных объектов
+        for (var i = 0; i < 2; i++) {
+            selectedObjects[i].options.set({
+                strokeColor: "#0bbcc9",
+                iconImageHref: placemarkIcon
+            });
+        }
+        // Очистка массива выбранных объектов
+        selectedObjects.splice(0, selectedObjects.length);
+    }
+}
+
+export const spatialRelationsTool = () => {
+    var coord1;
+    var coord2;
+    if (selectedObjects.length == 0) {
+        alert("Выберите, пожалуйста, объекты для рассчёта!")
+        return;
+    }
+    else {
+        coord1 = selectedObjects[0].geometry.getType() === 'Point'
+            ?[[selectedObjects[0].geometry.getCoordinates()]]
+            :(selectedObjects[0].geometry.getType() === 'LineString'
+                ?[selectedObjects[0].geometry.getCoordinates()]
+                :selectedObjects[0].geometry.getCoordinates());
+        coord2 = selectedObjects[1].geometry.getType() === 'Point'
+            ?[[selectedObjects[1].geometry.getCoordinates()]]
+            :(selectedObjects[1].geometry.getType() === 'LineString'
+                ?[selectedObjects[1].geometry.getCoordinates()]
+                :selectedObjects[1].geometry.getCoordinates());
+        
+        const request = {
+            firstObject: coord1,
+            secondObject: coord2
+        }
+    
+        // Отправка запроса на сервер и демонстрация результата клиенту
+        axios.post('http://localhost:5148/SpatialRelations', request).then(response => {
+            alert("Пересечение: " + response.data.intersecting + "\n" 
+            + "Нахождение внутри: " + response.data.inside);
         },
         reject => {
             console.log(reject);
