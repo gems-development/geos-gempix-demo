@@ -17,7 +17,6 @@ namespace ApplicationServer.Controllers
         public DistanceController(
             ILogger<DistanceController> logger, 
             IGeometryPrimitiveReader geometryPrimitiveReader,
-            ICoordinateConverter coordinateConverter,
             IGeometryPrimitiveWriter geometryPrimitiveWriter)
         {
             _logger = logger;

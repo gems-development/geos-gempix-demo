@@ -17,7 +17,7 @@ public class WebMercatorToGeodeticCoordinateConverter : ICoordinateConverter
 
     public Point Convert(double x, double y)
     {
-        var wm = new WebMercator(y, x);
+        var wm = new WebMercator(x, y);
         var convertedPoint = WebMercator.ConvertWebMercatortoLatLong(wm);
         return new Point(
             convertedPoint.Latitude.ToDouble(), 

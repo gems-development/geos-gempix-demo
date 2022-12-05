@@ -13,9 +13,9 @@ public static class ServiceCollectionExtension
         services
             .AddScoped<GeometryPrimitiveReader>()
             .AddScoped<IGeometryPrimitiveReader, GeometryPrimitiveReaderDecorator>()
-            .AddScoped<ICoordinateConverter, GeodeticToWebMercatorCoordinateConverter>()
+            .AddScoped<GeodeticToWebMercatorCoordinateConverter>()
             .AddScoped<SpatialRelationsService>()
             .AddScoped<GeometryPrimitiveWriter>()
             .AddScoped<IGeometryPrimitiveWriter, GeometryPrimitiveWriterDecorator>()
-            .AddScoped<ICoordinateConverter, WebMercatorToGeodeticCoordinateConverter>();
+            .AddScoped<WebMercatorToGeodeticCoordinateConverter>();
 }

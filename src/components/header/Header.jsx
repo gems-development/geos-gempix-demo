@@ -14,7 +14,8 @@ import Menu from'../ui/burgerMenu/BurgerMenu.jsx';
 function Header() {
 
 const items = [
-    { value: "Измерить расстояние между объектами", onClick: spatialRelationsTool, icon: "square_foot" },
+    { value: "Измерить расстояние между объектами", onClick: distanceCalcTool, icon: "square_foot" },
+    { value: "Пространственные отношения", onClick: spatialRelationsTool, icon: "square_foot" },
      { value: "Ещё кнопка", onClick: removeAllObjects }, 
      { value: "Ещё кнопка", onClick: removeAllObjects }
 ] 

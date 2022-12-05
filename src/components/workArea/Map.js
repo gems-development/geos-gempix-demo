@@ -15,6 +15,7 @@ var coords2 = [];
 var stateMonitor1;
 var stateMonitor2;
 const selectedObjects = [];
+const tempObjects = [];
 
 // Хуки
 const ymaps = React.createRef(null);
@@ -60,6 +61,7 @@ export const newPoint = e => {
 
     // Выделение метки
     placemarkRef.current.events.add("click", function (e) {
+        clearTempObjects();
         if (selectedObjects.length == 2) {
             console.log("Array is full!");
             return;
@@ -134,6 +136,7 @@ export const newPolyline = () => {
 
     // Выделение полилинии
     polylineRef.current.events.add("click", function (e) {
+        clearTempObjects();
         if (selectedObjects.length == 2) {
             console.log("Array is full!");
             return;
@@ -181,6 +184,7 @@ export const newPolygon = () => {
 
     // Выделение полигона
     polygonRef.current.events.add("click", function (e) {
+        clearTempObjects();
         if (selectedObjects.length == 2) {
             console.log("Array is full!");
             return;
@@ -201,23 +205,22 @@ export const newPolygon = () => {
 
 // Создание и отрисовка линии кратчайшего расстояния
 function drawShortestLine(geometry) {
+    clearTempObjects();
     const shortestLine = new ymaps.current.Polyline(geometry, {},
         {
-            editorDrawingCursor: "crosshair",
-            editorMaxPoints: 100,
-            strokeColor: "#0bbcc9",
-            strokeWidth: 8,
-            draggable: true
-        }
-    );
-    shortestLine.options.set(geometry, {},
-        {
             strokeColor: "#57f909",
-            strokeWidth: 6,
+            strokeWidth: 4,
         }
     );
     polylineRef.current = shortestLine;
-    mapRef.current.geoObjects.add(polylineRef.current);
+    tempObjects.push(shortestLine);
+    mapRef.current.geoObjects.add(tempObjects.find(x=>x));
+}
+
+// Очистка карты от временных объектов
+export function clearTempObjects() {
+    mapRef.current.geoObjects.remove(tempObjects.find(x=>x));
+    tempObjects.splice(0, tempObjects.length);
 }
 
 // Инструмент вычисления расстояния
@@ -247,7 +250,7 @@ export const distanceCalcTool = () => {
     
         // Отправка запроса на сервер и демонстрация результата клиенту
         axios.post('http://localhost:5148/Distance', request).then(response => {
-            var geometry = response.data.line;
+            var geometry = response.data.line.find(coords => coords);
             drawShortestLine(geometry);
             alert(response.data.distance);
         },
