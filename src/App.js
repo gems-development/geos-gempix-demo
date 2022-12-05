@@ -1,7 +1,7 @@
 import './App.css';
 import MainPage from "./pages/mainPage/MainPage.jsx"
 import axios from 'axios';
-import {useEffect } from 'react';
+import {useEffect } from "react";
 
 
 function App() {

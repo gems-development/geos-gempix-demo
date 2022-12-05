@@ -254,6 +254,7 @@ export const distanceCalcTool = () => {
         axios.post('http://localhost:5148/Distance', request).then(response => {
             var geometry = response.data.line;
           //  shortestLine(geometry);
+            drawShortestLine(geometry);
             alert(response.data.distance);
         },
         reject => {
