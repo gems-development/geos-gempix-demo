@@ -4,6 +4,8 @@ import './Map.css';
 import placemarkIcon from '../../assets/img/placemarkIcon.png';
 import selPlacemarkIcon from '../../assets/img/selPlacemarkIcon.png';
 import axios from 'axios';
+import Info from '../../components/ui/Info/Info';
+
 
 const mapState = {
     center: [54.98517806972585,73.3714099999999],
@@ -80,7 +82,10 @@ export const newPoint = e => {
 
 // Очистка всех объектов на карте
 export const removeAllObjects = () => {
+    
     mapRef.current.geoObjects.removeAll();
+    Info.changeVisible();
+    Info.updateText("Объекты были удалены");
 }
 
 function getPolylineCoords(coordsArr1) {
@@ -248,7 +253,7 @@ export const distanceCalcTool = () => {
         // Отправка запроса на сервер и демонстрация результата клиенту
         axios.post('http://localhost:5148/Distance', request).then(response => {
             var geometry = response.data.line;
-            shortestLine(geometry);
+          //  shortestLine(geometry);
             alert(response.data.distance);
         },
         reject => {
@@ -309,6 +314,7 @@ export const spatialRelationsTool = () => {
         }
         // Очистка массива выбранных объектов
         selectedObjects.splice(0, selectedObjects.length);
+        
     }
 }
  
