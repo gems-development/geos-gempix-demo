@@ -1,4 +1,5 @@
-﻿using ApplicationServices.Interfaces;
+﻿using ApplicationServices.Converters;
+using ApplicationServices.Interfaces;
 using GeometryModels;
 using GeometryModels.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -7,10 +8,12 @@ namespace ApplicationServices.Writers;
 
 public class GeometryPrimitiveWriterDecorator : IGeometryPrimitiveWriter
 {
-    private readonly ICoordinateConverter _coordinateConverter;
+    private readonly WebMercatorToGeodeticCoordinateConverter _coordinateConverter;
     private readonly GeometryPrimitiveWriter _geometryPrimitiveWriter;
 
-    public GeometryPrimitiveWriterDecorator(ICoordinateConverter coordinateConverter, GeometryPrimitiveWriter geometryPrimitiveWriter)
+    public GeometryPrimitiveWriterDecorator(
+        WebMercatorToGeodeticCoordinateConverter coordinateConverter, 
+        GeometryPrimitiveWriter geometryPrimitiveWriter)
     {
         _coordinateConverter = coordinateConverter;
         _geometryPrimitiveWriter = geometryPrimitiveWriter;

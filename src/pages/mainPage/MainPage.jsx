@@ -10,7 +10,7 @@ function MainPage() {
     <body>
      <Header/>
      <Map1/>
-     <Info/>
+    
      <Footer/>
     </body>
     )
