@@ -1,3 +1,5 @@
+using ApplicationServer.Mapper;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,6 +13,7 @@ builder.Services.AddCors(options =>
         "default", 
         policyBuilder => policyBuilder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
         ));
+builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 builder.Services.AddApplicationServices();
 
 var app = builder.Build();

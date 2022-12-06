@@ -4,10 +4,11 @@ import Header from "../../components/header/Header.jsx"
 import Map1 from "../../components/workArea/Map.js"
 import Footer from "../../components/footer/Footer.jsx"
 import Info from "../../components/ui/Info/Info"
+import {clearTempObjects} from '../../components/workArea/Map.js';
 
 function MainPage() {
     return (
-    <body>
+    <body onClick = {clearTempObjects}>
      <Header/>
      <Map1/>
     

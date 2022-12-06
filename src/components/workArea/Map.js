@@ -4,8 +4,6 @@ import './Map.css';
 import placemarkIcon from '../../assets/img/placemarkIcon.png';
 import selPlacemarkIcon from '../../assets/img/selPlacemarkIcon.png';
 import axios from 'axios';
-import Info from '../../components/ui/Info/Info';
-
 
 const mapState = {
     center: [54.98517806972585,73.3714099999999],
@@ -63,7 +61,6 @@ export const newPoint = e => {
 
     // Выделение метки
     placemarkRef.current.events.add("click", function (e) {
-        clearTempObjects();
         if (selectedObjects.length == 2) {
             console.log("Array is full!");
             return;
@@ -84,10 +81,7 @@ export const newPoint = e => {
 
 // Очистка всех объектов на карте
 export const removeAllObjects = () => {
-    
     mapRef.current.geoObjects.removeAll();
-    Info.changeVisible();
-    Info.updateText("Объекты были удалены");
 }
 
 function getPolylineCoords(coordsArr1) {
@@ -141,7 +135,6 @@ export const newPolyline = () => {
 
     // Выделение полилинии
     polylineRef.current.events.add("click", function (e) {
-        clearTempObjects();
         if (selectedObjects.length == 2) {
             console.log("Array is full!");
             return;
@@ -189,7 +182,6 @@ export const newPolygon = () => {
 
     // Выделение полигона
     polygonRef.current.events.add("click", function (e) {
-        clearTempObjects();
         if (selectedObjects.length == 2) {
             console.log("Array is full!");
             return;
@@ -210,7 +202,6 @@ export const newPolygon = () => {
 
 // Создание и отрисовка линии кратчайшего расстояния
 function drawShortestLine(geometry) {
-    clearTempObjects();
     const shortestLine = new ymaps.current.Polyline(geometry, {},
         {
             strokeColor: "#57f909",
@@ -223,104 +214,82 @@ function drawShortestLine(geometry) {
 }
 
 // Очистка карты от временных объектов
-export function clearTempObjects() {
+export const clearTempObjects = () => {
     mapRef.current.geoObjects.remove(tempObjects.find(x=>x));
     tempObjects.splice(0, tempObjects.length);
 }
 
-// Инструмент вычисления расстояния
-export const distanceCalcTool = () => {
+// Формирование запроса
+function requestFormation() {
     var coord1;
     var coord2;
+    coord1 = selectedObjects[0].geometry.getType() === 'Point'
+            ?[[selectedObjects[0].geometry.getCoordinates()]]
+            :(selectedObjects[0].geometry.getType() === 'LineString'
+                ?[selectedObjects[0].geometry.getCoordinates()]
+                :selectedObjects[0].geometry.getCoordinates());
+    coord2 = selectedObjects[1].geometry.getType() === 'Point'
+        ?[[selectedObjects[1].geometry.getCoordinates()]]
+        :(selectedObjects[1].geometry.getType() === 'LineString'
+            ?[selectedObjects[1].geometry.getCoordinates()]
+            :selectedObjects[1].geometry.getCoordinates());
+        
+    const request = {
+        firstObject: coord1,
+        secondObject: coord2
+    }
+    return request;
+}
+
+function resetObjectState() {
+    // Снятие выделения с выбранных объектов
+    for (var i = 0; i < 2; i++) {
+        selectedObjects[i].options.set({
+            strokeColor: "#0bbcc9",
+            iconImageHref: placemarkIcon
+        });
+    }
+
+    // Очистка массива выбранных объектов
+    selectedObjects.splice(0, selectedObjects.length);
+}
+
+/* Инструмент вычисления расстояния */
+export const distanceCalcTool = () => {
     if (selectedObjects.length == 0) {
         alert("Выберите, пожалуйста, объекты для рассчёта!")
         return;
     }
     else {
-        coord1 = selectedObjects[0].geometry.getType() === 'Point'
-            ?[[selectedObjects[0].geometry.getCoordinates()]]
-            :(selectedObjects[0].geometry.getType() === 'LineString'
-                ?[selectedObjects[0].geometry.getCoordinates()]
-                :selectedObjects[0].geometry.getCoordinates());
-        coord2 = selectedObjects[1].geometry.getType() === 'Point'
-            ?[[selectedObjects[1].geometry.getCoordinates()]]
-            :(selectedObjects[1].geometry.getType() === 'LineString'
-                ?[selectedObjects[1].geometry.getCoordinates()]
-                :selectedObjects[1].geometry.getCoordinates());
-        
-        const request = {
-            firstObject: coord1,
-            secondObject: coord2
-        }
+        const request = requestFormation();
     
-        // Отправка запроса на сервер и демонстрация результата клиенту
         axios.post('http://localhost:5148/Distance', request).then(response => {
-         
-            var geometry = response.data.line;
-          //  shortestLine(geometry);
             var geometry = response.data.line.find(coords => coords);
             drawShortestLine(geometry);
             alert(response.data.distance);
         },
-        reject => {
-            console.log(reject);
-        });
+        reject => { console.log(reject); });
 
-        // Снятие выделения с выбранных объектов
-        for (var i = 0; i < 2; i++) {
-            selectedObjects[i].options.set({
-                strokeColor: "#0bbcc9",
-                iconImageHref: placemarkIcon
-            });
-        }
-        // Очистка массива выбранных объектов
-        selectedObjects.splice(0, selectedObjects.length);
+        resetObjectState();
     }
 }
 
+/* Инструмент для демонстрации пространственных отношений */
 export const spatialRelationsTool = () => {
-    var coord1;
-    var coord2;
     if (selectedObjects.length == 0) {
         alert("Выберите, пожалуйста, объекты для рассчёта!")
         return;
     }
     else {
-        coord1 = selectedObjects[0].geometry.getType() === 'Point'
-            ?[[selectedObjects[0].geometry.getCoordinates()]]
-            :(selectedObjects[0].geometry.getType() === 'LineString'
-                ?[selectedObjects[0].geometry.getCoordinates()]
-                :selectedObjects[0].geometry.getCoordinates());
-        coord2 = selectedObjects[1].geometry.getType() === 'Point'
-            ?[[selectedObjects[1].geometry.getCoordinates()]]
-            :(selectedObjects[1].geometry.getType() === 'LineString'
-                ?[selectedObjects[1].geometry.getCoordinates()]
-                :selectedObjects[1].geometry.getCoordinates());
-        
-        const request = {
-            firstObject: coord1,
-            secondObject: coord2
-        }
+        const request = requestFormation();
     
-        // Отправка запроса на сервер и демонстрация результата клиенту
         axios.post('http://localhost:5148/SpatialRelations', request).then(response => {
             alert("Пересечение: " + response.data.intersecting + "\n" 
             + "Нахождение внутри: " + response.data.inside);
         },
-        reject => {
-            console.log(reject);
-        });
+        reject => { console.log(reject); });
 
-        // Снятие выделения с выбранных объектов
-        for (var i = 0; i < 2; i++) {
-            selectedObjects[i].options.set({
-                strokeColor: "#0bbcc9",
-                iconImageHref: placemarkIcon
-            });
-        }
-        // Очистка массива выбранных объектов
-        selectedObjects.splice(0, selectedObjects.length);
-        
+        resetObjectState();
     }
 }
  
@@ -343,8 +312,7 @@ export default function Map1() {
                     className = "map-size map-mode"
                     modules = {[
                         "Placemark", "Polyline", "Polygon", "geocode", "geoObject.addon.balloon",
-                        "geoObject.addon.editor", "Monitor", "geoObject.addon.hint", "GeoObjectCollection",
-                        "ObjectManager"
+                        "geoObject.addon.editor", "Monitor", "geoObject.addon.hint"
                     ]}
                     instanceRef = {mapRef}
                     onLoad = {(ymapsInstance) => (ymaps.current = ymapsInstance)}

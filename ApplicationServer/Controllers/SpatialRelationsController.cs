@@ -1,10 +1,8 @@
 ﻿using ApplicationServer.Dto;
 using Microsoft.AspNetCore.Mvc;
-using ApplicationServer.Model;
-using ApplicationServices;
 using ApplicationServices.Interfaces;
-using ApplicationServices.Readers;
 using ApplicationServices.Service;
+using AutoMapper;
 
 namespace ApplicationServer.Controllers
 {
@@ -15,15 +13,18 @@ namespace ApplicationServer.Controllers
         private readonly ILogger<SpatialRelationsController> _logger;
         private readonly IGeometryPrimitiveReader _geometryPrimitiveReader;
         private readonly SpatialRelationsService _spatialRelationsService;
+        private readonly IMapper _mapper;
 
         public SpatialRelationsController(
             ILogger<SpatialRelationsController> logger,
             IGeometryPrimitiveReader geometryPrimitiveReader, 
-            SpatialRelationsService spatialRelationsService)
+            SpatialRelationsService spatialRelationsService,
+            IMapper mapper)
         {
             _logger = logger;
             _geometryPrimitiveReader = geometryPrimitiveReader;
             _spatialRelationsService = spatialRelationsService;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -38,8 +39,10 @@ namespace ApplicationServer.Controllers
 
             var spatialRelationsInfo = 
                 _spatialRelationsService.GetSpatialRelationsInfo(geometryPrimitive1, geometryPrimitive2);
-
-            return Ok(spatialRelationsInfo);
+            
+            var spatialRelationsInfoDto = _mapper.Map<SpatialRelationsInfoDto>(spatialRelationsInfo);
+            
+            return Ok(spatialRelationsInfoDto);
         }
     }
 }

@@ -17,5 +17,6 @@ public static class ServiceCollectionExtension
             .AddScoped<SpatialRelationsService>()
             .AddScoped<GeometryPrimitiveWriter>()
             .AddScoped<IGeometryPrimitiveWriter, GeometryPrimitiveWriterDecorator>()
-            .AddScoped<WebMercatorToGeodeticCoordinateConverter>();
+            .AddScoped<WebMercatorToGeodeticCoordinateConverter>()
+            ;
 }

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ApplicationServices.Interfaces;
 using GeometryModels.Extensions;
-using GeometryModels.Models;
 
 namespace ApplicationServer.Controllers
 {
