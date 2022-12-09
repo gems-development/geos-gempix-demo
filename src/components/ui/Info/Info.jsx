@@ -1,9 +1,5 @@
 import React, {useState, Component, useCallback } from "react";
-
 import "./Info.css";
-
-
-
 
 export default class Info extends Component{
     state = {
@@ -19,7 +15,7 @@ export default class Info extends Component{
         const {output} = this.state;
         this.setState({output: (text.current.value)})
     }
-    render(){
+    render() {
         return(
         <div className={'info-area ' + (this.state.isVisible? 'visible-i' : 'hidden-i')} >
                        <span className="information">{this.state.output}</span>                       
@@ -29,13 +25,4 @@ export default class Info extends Component{
         </div>
         )
     }
- 
-
 }
-
-
-     
-  
-
-
-
