@@ -1,4 +1,5 @@
 ﻿using GeometryModels;
+using GeometryModels.Models;
 
 namespace ApplicationServices.Interfaces;
 

@@ -1,10 +1,11 @@
 ﻿using ApplicationServices.Interfaces;
 using CoordinateSharp;
 using GeometryModels;
+using GeometryModels.Models;
 
 namespace ApplicationServices.Converters;
 
-internal class GeodeticTo3857CoordinateConverter : ICoordinateConverter
+internal class GeodeticToWebMercatorCoordinateConverter : ICoordinateConverter
 {
     public Point Convert(Point point)
     {

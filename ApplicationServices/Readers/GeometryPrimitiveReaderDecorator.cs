@@ -1,3 +1,4 @@
+using ApplicationServices.Converters;
 using ApplicationServices.Interfaces;
 using GeometryModels;
 using GeometryModels.Models;
@@ -6,11 +7,11 @@ namespace ApplicationServices.Readers;
 
 internal class GeometryPrimitiveReaderDecorator : IGeometryPrimitiveReader
 {
-    private readonly ICoordinateConverter _coordinateConverter;
+    private readonly GeodeticToWebMercatorCoordinateConverter _coordinateConverter;
     private readonly GeometryPrimitiveReader _geometryPrimitiveReader;
 
     public GeometryPrimitiveReaderDecorator(
-        ICoordinateConverter coordinateConverter, 
+        GeodeticToWebMercatorCoordinateConverter coordinateConverter, 
         GeometryPrimitiveReader geometryPrimitiveReader)
     {
         _coordinateConverter = coordinateConverter;
