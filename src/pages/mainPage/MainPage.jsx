@@ -11,7 +11,7 @@ function MainPage() {
     <body onClick = {clearTempObjects}>
      <Header/>
      <Map1/>
-    
+     <Info/>
      <Footer/>
     </body>
     )

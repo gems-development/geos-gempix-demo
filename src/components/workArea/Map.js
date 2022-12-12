@@ -4,6 +4,8 @@ import './Map.css';
 import placemarkIcon from '../../assets/img/placemarkIcon.png';
 import selPlacemarkIcon from '../../assets/img/selPlacemarkIcon.png';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import Info, {UpdateOutput} from "../../components/ui/Info/Info"
 
 const mapState = {
     center: [54.98517806972585,73.3714099999999],
@@ -24,12 +26,16 @@ const mapRef = React.createRef(null);
 const polylineRef = React.createRef(null);
 const polygonRef = React.createRef(null);
 
+
+
 // Обратное геокодирование
 const getAddress = (coords) => {
     ymaps.current.geocode(coords).then((res) => {
         const firstGeoObject = res.geoObjects.get(0);
     })
 }
+
+
 
 // Создание точки
 function createPlacemark(coords) {
@@ -82,6 +88,8 @@ export const newPoint = e => {
 // Очистка всех объектов на карте
 export const removeAllObjects = () => {
     mapRef.current.geoObjects.removeAll();
+    UpdateOutput("text");
+
 }
 
 function getPolylineCoords(coordsArr1) {
