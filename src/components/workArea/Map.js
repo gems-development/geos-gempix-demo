@@ -5,7 +5,7 @@ import placemarkIcon from '../../assets/img/placemarkIcon.png';
 import { pointActions, polylineActions, polygonActions, drawShortestLine } from './MapObjectFactory';
 import axios from 'axios';
 import store from "../../store/store"
-import { updateOutputAction } from '../../store/actionCreaators/actionCreator';
+import { makeVisibleAction, updateOutputAction } from '../../store/actionCreaators/actionCreator';
 
 var coords1 = [];
 var coords2 = [];
@@ -79,6 +79,7 @@ export function distanceCalcTool() {
 
             // Демонстрация численного значения расстояния клиенту
             store.dispatch(updateOutputAction("Расстояние между объектами: " + response.data.distance));
+            store.dispatch(makeVisibleAction())
         },
         reject => { console.log(reject); });
 
@@ -99,6 +100,7 @@ export function spatialRelationsTool() {
         axios.post('http://localhost:5148/SpatialRelations', request).then(response => {
             store.dispatch(updateOutputAction("Пересечение: " + response.data.intersecting + "\n"
                 + "Нахождение внутри: " + response.data.inside));
+                store.dispatch(makeVisibleAction())
         },
             reject => { console.log(reject); });
 
@@ -112,6 +114,7 @@ export function RemoveAllObjects () {
     
     mapRef.current.geoObjects.removeAll();  
     store.dispatch(updateOutputAction("Карта очищена"))
+    store.dispatch(makeVisibleAction())
     
 }
 

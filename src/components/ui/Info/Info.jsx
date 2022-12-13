@@ -1,6 +1,7 @@
 
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { makeUnVisibleAction } from "../../../store/actionCreaators/actionCreator";
 import "./Info.css";
 
 
@@ -11,7 +12,7 @@ export const Info = () => {
    const visible = useSelector(state => state.visible);
    
    const makeUnVisible = () => {
-    dispatch(makeUnVisible())
+    dispatch(makeUnVisibleAction())
    }
    
      
