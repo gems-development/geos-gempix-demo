@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import "./DropdownMenu.css"
 
-import {removeAllObjects} from '../../workArea/Map.js';
+import {RemoveAllObjects} from '../../workArea/Map.js';
 import {polylineActions} from '../../workArea/MapObjectFactory.js';
 import {polygonActions} from '../../workArea/MapObjectFactory.js';
 
@@ -20,7 +20,7 @@ function DropdownMenu () {
                     <span class="material-icons">timeline</span></li>
                     <li><button className="DropBtn" onClick = {polygonActions}>Полигон</button>
                     <span class="material-icons">polymer</span></li>
-                    <li><button className="DropBtn" onClick = {removeAllObjects}>Очистка</button>
+                    <li><button className="DropBtn" onClick = {RemoveAllObjects}>Очистка</button>
                     <span class="material-symbols-outlined">delete</span></li>
                 </ul>
             </div>

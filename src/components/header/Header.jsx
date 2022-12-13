@@ -1,7 +1,7 @@
 import React from "react";
 import "./Header.css"
 
-import {removeAllObjects} from '../workArea/Map.js';
+import {RemoveAllObjects} from '../workArea/Map.js';
 import {distanceCalcTool} from '../workArea/Map.js';
 import {spatialRelationsTool} from '../workArea/Map.js';
 
@@ -16,8 +16,7 @@ function Header() {
 const items = [
     { value: "Измерить расстояние между объектами", onClick: distanceCalcTool, icon: "square_foot" },
     { value: "Пространственные отношения", onClick: spatialRelationsTool, icon: "help_center" },
-     { value: "Ещё кнопка", onClick: removeAllObjects }, 
-     { value: "Ещё кнопка", onClick: removeAllObjects }
+
 ] 
     
 return(

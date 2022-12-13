@@ -1,11 +1,11 @@
-import React, {useEffect, useCallback, useState } from 'react';
+import React, {useEffect, useCallback } from 'react';
 import { YMaps, Map, ZoomControl } from 'react-yandex-maps';
 import './Map.css';
 import placemarkIcon from '../../assets/img/placemarkIcon.png';
 import { pointActions, polylineActions, polygonActions, drawShortestLine } from './MapObjectFactory';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import Info, {UpdateOutput} from "../../components/ui/Info/Info"
+import store from "../../store/store"
+import { updateOutputAction } from '../../store/actionCreaators/actionCreator';
 
 var coords1 = [];
 var coords2 = [];
@@ -21,11 +21,14 @@ export const mapRef = React.createRef(null);
 export const polylineRef = React.createRef(null);
 export const polygonRef = React.createRef(null);
 
+
 // Стартовая геопозиция
 const mapState = { center: [54.98517806972585, 73.3714099999999], zoom: 16 };
 
+
 export default function GemPixMap() {
     /* Переход в режим добавления точек нажатием ESC */
+    
     const escFunction = useCallback((event) => {
         if (event.keyCode === 27) objStateCheck();
     }, []);
@@ -62,14 +65,12 @@ export default function GemPixMap() {
 
 /* Инструмент вычисления расстояния */
 export function distanceCalcTool() {
-    if (selectedObjects.length == 0) {
+    if (selectedObjects.length === 0) {
         alert("Выберите, пожалуйста, объекты для рассчёта!");
         return;
     }
     else {
         const request = requestFormation();
-    UpdateOutput("text");
-
 
         axios.post('http://localhost:5148/Distance', request).then(response => {
             // Отрисовка линии кратчайшего расстояния
@@ -77,7 +78,7 @@ export function distanceCalcTool() {
             drawShortestLine(geometry);
 
             // Демонстрация численного значения расстояния клиенту
-            alert(response.data.distance);
+            store.dispatch(updateOutputAction("Расстояние между объектами: " + response.data.distance));
         },
         reject => { console.log(reject); });
 
@@ -87,7 +88,8 @@ export function distanceCalcTool() {
 
 /* Инструмент для демонстрации пространственных отношений */
 export function spatialRelationsTool() {
-    if (selectedObjects.length == 0) {
+    
+    if (selectedObjects.length === 0) {
         alert("Выберите, пожалуйста, объекты для рассчёта!");
         return;
     }
@@ -95,18 +97,22 @@ export function spatialRelationsTool() {
         const request = requestFormation();
 
         axios.post('http://localhost:5148/SpatialRelations', request).then(response => {
-            alert("Пересечение: " + response.data.intersecting + "\n"
-                + "Нахождение внутри: " + response.data.inside);
+            store.dispatch(updateOutputAction("Пересечение: " + response.data.intersecting + "\n"
+                + "Нахождение внутри: " + response.data.inside));
         },
             reject => { console.log(reject); });
 
         resetObjectState();
+        
     }
 }
 
 /* Очистка всех объектов на карте */
-export function removeAllObjects() {
-    mapRef.current.geoObjects.removeAll();
+export function RemoveAllObjects () {
+    
+    mapRef.current.geoObjects.removeAll();  
+    store.dispatch(updateOutputAction("Карта очищена"))
+    
 }
 
 /* Формирование запроса к серверу */

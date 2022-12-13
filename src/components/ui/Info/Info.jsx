@@ -1,18 +1,20 @@
-import React, {useState, Component, useCallback } from "react";
+
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./Info.css";
 
-export default function Info (){
+
+
+export const Info = () => {
    const dispatch = useDispatch();
    const output = useSelector (state => state.output);
-   const visible = useSelector(state => state.visible)
+   const visible = useSelector(state => state.visible);
+   
    const makeUnVisible = () => {
-    dispatch({type: "makeUnVisible"})
+    dispatch(makeUnVisible())
    }
-   function updateOutput (text)  {
-    dispatch({type: "updateOutput", output: text})
-   }
-    render() {
+   
+     
         return(
         <div className={'info-area ' + (visible? 'visible-i' : 'hidden-i')} >
                        <span className="information">{output}</span>                       
@@ -21,11 +23,4 @@ export default function Info (){
                        </span>
         </div>
         )
-    
- 
-
 }
-export function UpdateOutput (text)  {
-    const dispatch = useDispatch();
-    dispatch({type: "updateOutput", output: text})
-   }
