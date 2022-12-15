@@ -5,7 +5,7 @@ import placemarkIcon from '../../assets/img/placemarkIcon.png';
 import { pointActions, polylineActions, polygonActions, drawShortestLine } from './MapObjectFactory';
 import axios from 'axios';
 import store from "../../store/store"
-import { makeVisibleAction, updateOutputAction } from '../../store/actionCreaators/actionCreator';
+import { showAction, updateOutputAction } from '../../store/actionCreaators/actionCreator';
 
 var coords1 = [];
 var coords2 = [];
@@ -79,7 +79,7 @@ export function distanceCalcTool() {
 
             // Демонстрация численного значения расстояния клиенту
             store.dispatch(updateOutputAction("Расстояние между объектами: " + response.data.distance));
-            store.dispatch(makeVisibleAction())
+            store.dispatch(showAction())
         },
         reject => { console.log(reject); });
 
@@ -88,7 +88,7 @@ export function distanceCalcTool() {
 }
 
 /* Инструмент для демонстрации пространственных отношений */
-export function spatialRelationsTool() {
+export function createSpatialRelationsRequest() {
     
     if (selectedObjects.length === 0) {
         alert("Выберите, пожалуйста, объекты для рассчёта!");
@@ -100,7 +100,7 @@ export function spatialRelationsTool() {
         axios.post('http://localhost:5148/SpatialRelations', request).then(response => {
             store.dispatch(updateOutputAction("Пересечение: " + response.data.intersecting + "\n"
                 + "Нахождение внутри: " + response.data.inside));
-                store.dispatch(makeVisibleAction())
+                store.dispatch(showAction())
         },
             reject => { console.log(reject); });
 
@@ -110,11 +110,11 @@ export function spatialRelationsTool() {
 }
 
 /* Очистка всех объектов на карте */
-export function RemoveAllObjects () {
+export function removeAllObjects () {
     
     mapRef.current.geoObjects.removeAll();  
     store.dispatch(updateOutputAction("Карта очищена"))
-    store.dispatch(makeVisibleAction())
+    store.dispatch(showAction())
     
 }
 
