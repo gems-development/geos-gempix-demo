@@ -3,7 +3,7 @@ import "./Header.css"
 
 import {removeAllObjects} from '../workArea/Map.js';
 import {distanceCalcTool} from '../workArea/Map.js';
-import {spatialRelationsTool} from '../workArea/Map.js';
+import {createSpatialRelationsRequest} from '../workArea/Map.js';
 
 import vkLogo from "../../assets/img/vkLogo.png";
 import ytLogo from "../../assets/img/YtLogo.png";
@@ -15,9 +15,8 @@ function Header() {
 
 const items = [
     { value: "Измерить расстояние между объектами", onClick: distanceCalcTool, icon: "square_foot" },
-    { value: "Пространственные отношения", onClick: spatialRelationsTool, icon: "help_center" },
-     { value: "Ещё кнопка", onClick: removeAllObjects }, 
-     { value: "Ещё кнопка", onClick: removeAllObjects }
+    { value: "Пространственные отношения", onClick: createSpatialRelationsRequest, icon: "help_center" },
+
 ] 
     
 return(
