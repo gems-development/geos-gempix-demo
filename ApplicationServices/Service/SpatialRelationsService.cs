@@ -1,4 +1,5 @@
 ﻿using ApplicationServices.Model;
+using GeosGempix.Extensions;
 
 namespace ApplicationServices.Service;
 
@@ -6,8 +7,8 @@ public class SpatialRelationsService
 {
     public SpatialRelationsInfo GetSpatialRelationsInfo(IGeometryPrimitive first, IGeometryPrimitive second)
     {
-        var isIntersect = GeometryModels.Extensions.IntersectorExtension.Intersects(first, second);
-        var isInside = GeometryModels.Extensions.InsiderExtension.IsInside(first, second);
+        var isIntersect = first.Intersects(second);
+        var isInside = first.IsInside(second);
 
         var relationsInfo = new SpatialRelationsInfo
         {

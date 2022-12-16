@@ -1,5 +1,4 @@
-﻿using GeometryModels;
-using GeometryModels.Models;
+﻿using GeosGempix;
 
 namespace ApplicationServices.Interfaces;
 

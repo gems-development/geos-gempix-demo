@@ -1,8 +1,5 @@
 ﻿using ApplicationServices.Converters;
 using ApplicationServices.Interfaces;
-using GeometryModels;
-using GeometryModels.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace ApplicationServices.Writers;
 

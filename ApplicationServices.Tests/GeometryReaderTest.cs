@@ -1,6 +1,6 @@
 using ApplicationServices.Readers;
-using GeometryModels;
-using GeometryModels.Models;
+using GeosGempix;
+using GeosGempix.Models;
 
 namespace ApplicationServices.Tests;
 

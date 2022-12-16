@@ -1,7 +1,6 @@
 ﻿using ApplicationServices.Interfaces;
 using CoordinateSharp;
-using GeometryModels;
-using GeometryModels.Models;
+using GeosGempix;
 
 namespace ApplicationServices.Converters;
 

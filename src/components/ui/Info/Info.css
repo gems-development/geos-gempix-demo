@@ -12,7 +12,9 @@
 }
 .information{
     color: whitesmoke;
-    padding: 5px;
+    position: absolute;
+    left: 5px;
+    top: 5px;
     
 }
 .hidden-i {

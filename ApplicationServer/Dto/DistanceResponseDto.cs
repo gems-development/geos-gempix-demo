@@ -1,6 +1,4 @@
-﻿using GeometryModels.Models;
-
-namespace ApplicationServer.Dto;
+﻿namespace ApplicationServer.Dto;
 
 public class DistanceResponseDto
 {

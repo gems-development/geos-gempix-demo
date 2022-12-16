@@ -74,7 +74,7 @@ export function pointActions(e) {
 
     // Выделение метки
     placemarkRef.current.events.add("click", function (e) {
-        if (selectedObjects.length == 2) {
+        if (selectedObjects.length === 2) {
             console.log("Array is full!");
             return;
         }
@@ -107,7 +107,7 @@ export function polylineActions() {
 
     // Выделение полилинии
     polylineRef.current.events.add("click", function (e) {
-        if (selectedObjects.length == 2) {
+        if (selectedObjects.length === 2) {
             console.log("Array is full!");
             return;
         }
@@ -140,7 +140,7 @@ export function polygonActions() {
 
     // Выделение полигона
     polygonRef.current.events.add("click", function (e) {
-        if (selectedObjects.length == 2) {
+        if (selectedObjects.length === 2) {
             console.log("Array is full!");
             return;
         }
