@@ -70,7 +70,7 @@ export function distanceCalcTool() {
         return;
     }
     else {
-        const request = requestFormation();
+        const request = createSpatialRelationsRequest();
 
         axios.post('http://localhost:5148/Distance', request).then(response => {
             // Отрисовка линии кратчайшего расстояния
@@ -88,14 +88,14 @@ export function distanceCalcTool() {
 }
 
 /* Инструмент для демонстрации пространственных отношений */
-export function createSpatialRelationsRequest() {
+export function spatialRelationsTool () {
     
     if (selectedObjects.length === 0) {
         alert("Выберите, пожалуйста, объекты для рассчёта!");
         return;
     }
     else {
-        const request = requestFormation();
+        const request = createSpatialRelationsRequest();
 
         axios.post('http://localhost:5148/SpatialRelations', request).then(response => {
             store.dispatch(updateOutputAction("Пересечение: " + response.data.intersecting + "\n"
@@ -119,7 +119,7 @@ export function removeAllObjects () {
 }
 
 /* Формирование запроса к серверу */
-function requestFormation() {
+function createSpatialRelationsRequest() {
     var coord1;
     var coord2;
 
