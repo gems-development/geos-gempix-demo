@@ -1,26 +1,27 @@
-﻿using ApplicationServices.Interfaces;
-using CoordinateSharp;
+﻿using CoordinateSharp;
 using GeosGempix;
+using ApplicationServices.Interfaces;
 
-namespace ApplicationServices.Converters;
-
-public class WebMercatorToGeodeticCoordinateConverter : ICoordinateConverter
+namespace ApplicationServices.Converters
 {
-    public Point Convert(Point point)
+    public class WebMercatorToGeodeticCoordinateConverter : ICoordinateConverter
     {
-        var wm = new WebMercator(point.X, point.Y);
-        var convertedPoint = WebMercator.ConvertWebMercatortoLatLong(wm);
-        return new Point(
-            convertedPoint.Latitude.ToDouble(), 
-            convertedPoint.Longitude.ToDouble());
-    }
+        public Point Convert(Point point)
+        {
+            var wm = new WebMercator(point.X, point.Y);
+            var convertedPoint = WebMercator.ConvertWebMercatortoLatLong(wm);
+            return new Point(
+                convertedPoint.Latitude.ToDouble(),
+                convertedPoint.Longitude.ToDouble());
+        }
 
-    public Point Convert(double x, double y)
-    {
-        var wm = new WebMercator(x, y);
-        var convertedPoint = WebMercator.ConvertWebMercatortoLatLong(wm);
-        return new Point(
-            convertedPoint.Latitude.ToDouble(), 
-            convertedPoint.Longitude.ToDouble());
+        public Point Convert(double x, double y)
+        {
+            var wm = new WebMercator(x, y);
+            var convertedPoint = WebMercator.ConvertWebMercatortoLatLong(wm);
+            return new Point(
+                convertedPoint.Latitude.ToDouble(),
+                convertedPoint.Longitude.ToDouble());
+        }
     }
 }

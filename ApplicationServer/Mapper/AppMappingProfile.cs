@@ -1,13 +1,14 @@
-﻿using ApplicationServer.Dto;
+﻿using AutoMapper;
+using ApplicationServer.Dto;
 using ApplicationServices.Model;
-using AutoMapper;
 
-namespace ApplicationServer.Mapper;
-
-public class AppMappingProfile : Profile
+namespace ApplicationServer.Mapper
 {
-    public AppMappingProfile()
-    {			
-        CreateMap<SpatialRelationsInfo, SpatialRelationsInfoDto>();
+    public class AppMappingProfile : Profile
+    {
+        public AppMappingProfile()
+        {
+            CreateMap<SpatialRelationsInfo, SpatialRelationsInfoDto>();
+        }
     }
 }
