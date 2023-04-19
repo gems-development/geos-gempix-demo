@@ -1,6 +1,9 @@
-﻿namespace ApplicationServices.Interfaces;
+﻿using System.Collections.Generic;
 
-public interface IGeometryPrimitiveReader
+namespace ApplicationServices.Interfaces
 {
-    IGeometryPrimitive Read(IEnumerable<IEnumerable<IEnumerable<double>>> source);
+    public interface IGeometryPrimitiveReader
+    {
+        IGeometryPrimitive Read(IEnumerable<IEnumerable<IEnumerable<double>>> source);
+    }
 }

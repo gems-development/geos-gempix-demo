@@ -1,8 +1,9 @@
-﻿using ApplicationServer.Dto;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using ApplicationServer.Dto;
 using ApplicationServices.Interfaces;
 using ApplicationServices.Service;
-using AutoMapper;
 
 namespace ApplicationServer.Controllers
 {
@@ -10,7 +11,6 @@ namespace ApplicationServer.Controllers
     [Route("[controller]")]
     public class SpatialRelationsController : Controller
     {
-        private readonly ILogger<SpatialRelationsController> _logger;
         private readonly IGeometryPrimitiveReader _geometryPrimitiveReader;
         private readonly SpatialRelationsService _spatialRelationsService;
         private readonly IMapper _mapper;
@@ -21,7 +21,6 @@ namespace ApplicationServer.Controllers
             SpatialRelationsService spatialRelationsService,
             IMapper mapper)
         {
-            _logger = logger;
             _geometryPrimitiveReader = geometryPrimitiveReader;
             _spatialRelationsService = spatialRelationsService;
             _mapper = mapper;
@@ -36,10 +35,7 @@ namespace ApplicationServer.Controllers
             }
             var geometryPrimitive1 = _geometryPrimitiveReader.Read(request.FirstObject);
             var geometryPrimitive2 = _geometryPrimitiveReader.Read(request.SecondObject);
-
-            var spatialRelationsInfo = 
-                _spatialRelationsService.GetSpatialRelationsInfo(geometryPrimitive1, geometryPrimitive2);
-            
+            var spatialRelationsInfo = _spatialRelationsService.GetSpatialRelationsInfo(geometryPrimitive1, geometryPrimitive2);
             var spatialRelationsInfoDto = _mapper.Map<SpatialRelationsInfoDto>(spatialRelationsInfo);
             
             return Ok(spatialRelationsInfoDto);
