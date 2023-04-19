@@ -16,8 +16,7 @@ function Header() {
 const items = [
     { value: "Измерить расстояние между объектами", onClick: distanceCalcTool, icon: "square_foot" },
     { value: "Пространственные отношения", onClick: spatialRelationsTool, icon: "help_center" },
-     { value: "Ещё кнопка", onClick: removeAllObjects }, 
-     { value: "Ещё кнопка", onClick: removeAllObjects }
+
 ] 
     
 return(

@@ -1,6 +1,4 @@
-﻿using ApplicationServices.Model;
-
-namespace ApplicationServer.Dto;
+﻿namespace ApplicationServer.Dto;
 
 public class SpatialRelationsInfoDto
 {

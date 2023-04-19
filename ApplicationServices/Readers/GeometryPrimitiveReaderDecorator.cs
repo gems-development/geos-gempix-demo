@@ -1,7 +1,6 @@
 using ApplicationServices.Converters;
 using ApplicationServices.Interfaces;
-using GeometryModels;
-using GeometryModels.Models;
+using GeosGempix;
 
 namespace ApplicationServices.Readers;
 

@@ -1,6 +1,6 @@
 ﻿using ApplicationServices.Interfaces;
-using GeometryModels;
-using GeometryModels.Models;
+using GeosGempix;
+using GeosGempix.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace ApplicationServices.Writers;
