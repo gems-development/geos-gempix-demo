@@ -10,18 +10,18 @@ function DropdownMenu () {
 
     return(
         <div className="DropBtnBlock">
-
-            <button className="MainBtn" onClick={() => setIsOpen(prev => !prev)}>Добавить примитив</button> 
             <span class="material-icons">add</span>
+            <button className="MainBtn" onClick={() => setIsOpen(prev => !prev)}>Добавить примитив</button> 
+            
 
             <div className={'dropdown ' + (isOpen ? 'open' : 'closed')}>
-                <ul>
-                    <li><button className="DropBtn" onClick = {polylineActions}>Полилиния</button>
-                    <span class="material-icons">timeline</span></li>
-                    <li><button className="DropBtn" onClick = {polygonActions}>Полигон</button>
-                    <span class="material-icons">polymer</span></li>
-                    <li><button className="DropBtn" onClick = {removeAllObjects}>Очистка</button>
-                    <span class="material-symbols-outlined">delete</span></li>
+                <ul>                  
+                    <li><span class="material-icons">timeline</span>
+                    <button className="DropBtn" onClick = {polylineActions}>Полилиния</button></li>
+                    <li><span class="material-symbols-outlined">variables</span>
+                    <button className="DropBtn" onClick = {polygonActions}>Полигон</button>                   </li>
+                    <li><span class="material-symbols-outlined">delete</span>
+                    <button className="DropBtn" onClick = {removeAllObjects}>Очистка</button></li>
                 </ul>
             </div>
 

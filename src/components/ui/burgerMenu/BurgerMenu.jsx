@@ -57,8 +57,9 @@ const Menu = ({items}) => {
                     </li>
                     {items.map(item=>                    
                         <li onClick = {isMenuMustMoving && !isMenuMustMoving.matches ?  updateMenu : ''}>
-                            <button className="content_button" onClick ={item.onClick} >{item.value}</button>
                             <span class="material-icons">{item.icon}</span>
+                            <button className="content_button" onClick ={item.onClick} >{item.value}</button>
+                            
                         </li>
                         )}
                 </ul>
