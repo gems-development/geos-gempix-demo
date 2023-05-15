@@ -13,6 +13,7 @@ function MainPage() {
      <GemPixMap/>
      <Info/>
      <Footer/>
+     
     </body>
     )
 }
