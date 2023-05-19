@@ -1,7 +1,6 @@
 ﻿using ApplicationServices.Interfaces;
 using GeosGempix;
 using GeosGempix.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace ApplicationServices.Writers;
 
@@ -13,7 +12,7 @@ public class GeometryPrimitiveWriter : IGeometryPrimitiveWriter
         
         if (geometryPrimitive is Point point)
         {
-            throw new UnsupportedContentTypeException("Point not supported yet");
+            throw new Exception("Point not supported yet");
         }
         else if (geometryPrimitive is Line line)
         {
@@ -36,7 +35,7 @@ public class GeometryPrimitiveWriter : IGeometryPrimitiveWriter
         }
         else if (geometryPrimitive is Polygon polygon)
         {
-            throw new UnsupportedContentTypeException("Polygon not supported yet");
+            throw new Exception("Polygon not supported yet");
         }
         return package;
     }
