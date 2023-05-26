@@ -33,16 +33,12 @@ namespace ApplicationServer.Controllers
             }
             var geometryPrimitive1 = _geometryPrimitiveReader.Read(request.FirstObject);
             var geometryPrimitive2 = _geometryPrimitiveReader.Read(request.SecondObject);
-            //var distance = DistanceExtension.GetDistance(geometryPrimitive1, geometryPrimitive2);
-            var distance = geometryPrimitive1.GetDistance(geometryPrimitive2);
             
+            var distance = geometryPrimitive1.GetDistance(geometryPrimitive2);
             distanceResponse.Distance = distance;
-            // var shortestLine = ShortestLineExtension.GetShortestLine(geometryPrimitive1, geometryPrimitive2);
-            if (geometryPrimitive1 is not Polygon && geometryPrimitive2 is not Polygon) // TODO: проверить и убрать.
-            {
-                var shortestLine = geometryPrimitive1.GetShortestLine(geometryPrimitive2);
-                distanceResponse.Line = shortestLine is null ? null : _geometryPrimitiveWriter.Write(shortestLine);
-            }
+            
+            var shortestLine = geometryPrimitive1.GetShortestLine(geometryPrimitive2);
+            distanceResponse.Line = _geometryPrimitiveWriter.Write(shortestLine);
 
             return Ok(distanceResponse);
         }

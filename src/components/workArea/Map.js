@@ -142,7 +142,7 @@ function createSpatialRelationsRequest() {
         coord2 = [selectedObjects[1].geometry.getCoordinates()];
     }
     else if (selectedObjects[1].geometry.getType() === 'Polygon') {
-        coord2 = selectedObjects[0].geometry.getCoordinates();
+        coord2 = selectedObjects[1].geometry.getCoordinates();
     }
         
     const request = {
