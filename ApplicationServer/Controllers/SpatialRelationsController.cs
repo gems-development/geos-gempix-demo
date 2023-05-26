@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using ApplicationServer.Dto;
 using ApplicationServices.Interfaces;
 using ApplicationServices.Service;

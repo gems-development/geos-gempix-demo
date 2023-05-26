@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ApplicationServer.Dto;
 using ApplicationServices.Interfaces;
+using GeosGempix.Extensions;
 
 namespace ApplicationServer.Controllers
 {

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace ApplicationServer.Dto
 {
     public class SpatialRequestDto

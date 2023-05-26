@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ApplicationServices.Converters;
+﻿using ApplicationServices.Converters;
 using ApplicationServices.Interfaces;
 
 namespace ApplicationServices.Writers

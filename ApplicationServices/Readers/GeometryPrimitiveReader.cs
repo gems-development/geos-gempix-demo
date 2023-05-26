@@ -1,10 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
 using ApplicationServices.Interfaces;
 using GeosGempix;
 using GeosGempix.Models;
 
-
+namespace ApplicationServices.Readers
 {
     internal class GeometryPrimitiveReader : IGeometryPrimitiveReader
     {

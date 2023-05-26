@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ApplicationServer.Dto
+﻿namespace ApplicationServer.Dto
 {
     public class DistanceResponseDto
     {

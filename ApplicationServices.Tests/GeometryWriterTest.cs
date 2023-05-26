@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using ApplicationServices.Writers;
+﻿using ApplicationServices.Writers;
 using GeosGempix;
 using GeosGempix.Models;
 
