@@ -1,7 +1,10 @@
-namespace ApplicationServer.Dto;
+using System.Collections.Generic;
 
-public class SpatialRequestDto
+namespace ApplicationServer.Dto
 {
+    public class SpatialRequestDto
+    {
     public IEnumerable<IEnumerable<IEnumerable<double>>> FirstObject { get; set; } = null!;
     public IEnumerable<IEnumerable<IEnumerable<double>>> SecondObject { get; set; } = null!;
+    }
 }

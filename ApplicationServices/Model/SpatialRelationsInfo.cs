@@ -1,25 +1,28 @@
-﻿namespace ApplicationServices.Model;
+﻿using System;
 
-public class SpatialRelationsInfo
+namespace ApplicationServices.Model
 {
-    public bool Intersecting { get; set; }
-    public bool Inside { get; set; }
-
-    protected bool Equals(SpatialRelationsInfo other)
+    public class SpatialRelationsInfo
     {
-        return Intersecting == other.Intersecting && Inside == other.Inside;
-    }
+        public bool Intersecting { get; set; }
+        public bool Inside { get; set; }
 
-    public override bool Equals(object? obj)
-    {
-        if (ReferenceEquals(null, obj)) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != this.GetType()) return false;
-        return Equals((SpatialRelationsInfo) obj);
-    }
+        protected bool Equals(SpatialRelationsInfo other)
+        {
+            return Intersecting == other.Intersecting && Inside == other.Inside;
+        }
 
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Intersecting, Inside);
+        public override bool Equals(object? obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SpatialRelationsInfo) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Intersecting, Inside);
+        }
     }
 }

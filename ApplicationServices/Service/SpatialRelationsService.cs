@@ -1,20 +1,21 @@
-﻿using ApplicationServices.Model;
-using GeosGempix.Extensions;
+﻿using GeosGempix.Extensions;
+using ApplicationServices.Model;
 
-namespace ApplicationServices.Service;
-
-public class SpatialRelationsService
+namespace ApplicationServices.Service
 {
-    public SpatialRelationsInfo GetSpatialRelationsInfo(IGeometryPrimitive first, IGeometryPrimitive second)
+    public class SpatialRelationsService
     {
-        var isIntersect = first.Intersects(second);
-        var isInside = first.IsInside(second);
-
-        var relationsInfo = new SpatialRelationsInfo
+        public SpatialRelationsInfo GetSpatialRelationsInfo(IGeometryPrimitive first, IGeometryPrimitive second)
         {
-            Intersecting = isIntersect,
-            Inside = isInside
-        };
-        return relationsInfo;
+            var isIntersect = IntersectorExtension.Intersects(first, second);
+            var isInside = InsiderExtension.IsInside(first, second);
+
+            var relationsInfo = new SpatialRelationsInfo
+            {
+                Intersecting = isIntersect,
+                Inside = isInside
+            };
+            return relationsInfo;
+        }
     }
 }

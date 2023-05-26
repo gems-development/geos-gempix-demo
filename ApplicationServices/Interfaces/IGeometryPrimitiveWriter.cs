@@ -1,6 +1,9 @@
-﻿namespace ApplicationServices.Interfaces;
+﻿using System.Collections.Generic;
 
-public interface IGeometryPrimitiveWriter
+namespace ApplicationServices.Interfaces
 {
-    IEnumerable<IEnumerable<IEnumerable<double>>> Write(IGeometryPrimitive geometryPrimitive);
+    public interface IGeometryPrimitiveWriter
+    {
+        IEnumerable<IEnumerable<IEnumerable<double>>> Write(IGeometryPrimitive geometryPrimitive);
+    }
 }
