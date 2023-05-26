@@ -1,5 +1,3 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ApplicationServices.Interfaces;
 using GeosGempix;
 using GeosGempix.Models;
@@ -14,10 +12,11 @@ namespace ApplicationServices.Writers
 
             if (geometryPrimitive is Point point)
             {
-                throw new UnsupportedContentTypeException("Point not supported yet");
+                throw new Exception("Point not supported yet");
             }
             else if (geometryPrimitive is Line line)
             {
+
                 package = new[]
                 {
                     new[]
@@ -34,13 +33,13 @@ namespace ApplicationServices.Writers
                         }
                     }
                 };
+            
             }
             else if (geometryPrimitive is Polygon polygon)
             {
-                throw new UnsupportedContentTypeException("Polygon not supported yet");
+                throw new Exception("Polygon not supported yet");
             }
-
             return package;
-        }
+        }        
     }
 }

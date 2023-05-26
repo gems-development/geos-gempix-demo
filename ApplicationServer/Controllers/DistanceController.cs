@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+
+using Microsoft.AspNetCore.Mvc;
 using ApplicationServer.Dto;
 using ApplicationServices.Interfaces;
+using GeosGempix.Extensions;
 
 namespace ApplicationServer.Controllers
 {
@@ -29,13 +31,14 @@ namespace ApplicationServer.Controllers
             }
             var geometryPrimitive1 = _geometryPrimitiveReader.Read(request.FirstObject);
             var geometryPrimitive2 = _geometryPrimitiveReader.Read(request.SecondObject);
-            //var distance = DistanceExtension.GetDistance(geometryPrimitive1, geometryPrimitive2);
-            var distance = GeosGempix.Extensions.DistanceExtension.GetDistance(geometryPrimitive1, geometryPrimitive2);
-            
+            var distance = geometryPrimitive1.GetDistance(geometryPrimitive2);
             distanceResponse.Distance = distance;
-            // var shortestLine = ShortestLineExtension.GetShortestLine(geometryPrimitive1, geometryPrimitive2);
-            var shortestLine = GeosGempix.Extensions.ShortestLineExtension.GetShortestLine(geometryPrimitive1, geometryPrimitive2);
-            distanceResponse.Line = _geometryPrimitiveWriter.Write(shortestLine);
+            //var shortestLine = ShortestLineExtension.GetShortestLine(geometryPrimitive1, geometryPrimitive2);          
+            var shortestLine = geometryPrimitive1.GetShortestLine(geometryPrimitive2);
+            if (shortestLine is not null)
+                distanceResponse.Line = _geometryPrimitiveWriter.Write(shortestLine);
+            else
+                throw new Exception("shortest line is null");
 
             return Ok(distanceResponse);
         }

@@ -1,5 +1,3 @@
-using System.Linq;
-using System.Collections.Generic;
 using GeosGempix;
 using ApplicationServices.Converters;
 using ApplicationServices.Interfaces;

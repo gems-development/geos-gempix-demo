@@ -53,10 +53,10 @@ const Menu = ({items}) => {
             <nav className="menu_content">
                 <ul className="list">
                     <li>
-                        <DropdownMenu  onClick = {isMenuMustMoving && !isMenuMustMoving.matches ?  updateMenu : ''}/>
+                        <DropdownMenu  onClick = {isMenuMustMoving && !isMenuMustMoving.matches ?  updateMenu : null}/>
                     </li>
                     {items.map(item=>                    
-                        <li onClick = {isMenuMustMoving && !isMenuMustMoving.matches ?  updateMenu : ''}>
+                        <li onClick = {isMenuMustMoving && !isMenuMustMoving.matches ?  updateMenu : null}>
                             <span class="material-icons">{item.icon}</span>
                             <button className="content_button" onClick ={item.onClick} >{item.value}</button>
                             

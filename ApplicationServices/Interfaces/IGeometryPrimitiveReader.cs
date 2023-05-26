@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ApplicationServices.Interfaces
+﻿namespace ApplicationServices.Interfaces
 {
     public interface IGeometryPrimitiveReader
     {

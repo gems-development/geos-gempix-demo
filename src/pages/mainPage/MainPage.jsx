@@ -8,13 +8,12 @@ import {clearTempObjects} from '../../components/workArea/Map.js';
 
 function MainPage() {
     return (
-    <body onClick = {clearTempObjects}>
+    <div onClick = {clearTempObjects}>
      <Header/>
      <GemPixMap/>
      <Info/>
-     <Footer/>
-     
-    </body>
+     <Footer/>     
+    </div>
     )
 }
 

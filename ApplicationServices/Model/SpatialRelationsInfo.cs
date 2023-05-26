@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ApplicationServices.Model
+﻿namespace ApplicationServices.Model
 {
     public class SpatialRelationsInfo
     {

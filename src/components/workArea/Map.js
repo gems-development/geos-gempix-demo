@@ -73,10 +73,11 @@ export function distanceCalcTool() {
         const request = createSpatialRelationsRequest();
 
         axios.post('http://localhost:5148/Distance', request).then(response => {
-            // Отрисовка линии кратчайшего расстояния
-            var geometry = response.data.line.find(coords => coords);
-            drawShortestLine(geometry);
-
+            if (response.data.line) {
+                // Отрисовка линии кратчайшего расстояния
+                var geometry = response.data.line.find(coords => coords);
+                drawShortestLine(geometry);
+            }
             // Демонстрация численного значения расстояния клиенту
             store.dispatch(updateOutputAction("Расстояние между объектами: " + response.data.distance));
             store.dispatch(showAction())
@@ -115,7 +116,8 @@ export function removeAllObjects () {
     mapRef.current.geoObjects.removeAll();  
     store.dispatch(updateOutputAction("Карта очищена"))
     store.dispatch(showAction())
-    
+    // Очистка массива выбранных объектов
+    selectedObjects.splice(0, selectedObjects.length);
 }
 
 /* Формирование запроса к серверу */
@@ -129,12 +131,18 @@ function createSpatialRelationsRequest() {
     else if (selectedObjects[0].geometry.getType() === 'LineString') {
         coord1 = [selectedObjects[0].geometry.getCoordinates()];
     }
+    else if (selectedObjects[0].geometry.getType() === 'Polygon') {
+        coord1 = selectedObjects[0].geometry.getCoordinates();
+    }
 
     if (selectedObjects[1].geometry.getType() === 'Point') {
         coord2 = [[selectedObjects[1].geometry.getCoordinates()]];
     }
     else if (selectedObjects[1].geometry.getType() === 'LineString') {
         coord2 = [selectedObjects[1].geometry.getCoordinates()];
+    }
+    else if (selectedObjects[1].geometry.getType() === 'Polygon') {
+        coord2 = selectedObjects[1].geometry.getCoordinates();
     }
         
     const request = {

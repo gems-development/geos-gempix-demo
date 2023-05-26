@@ -7,8 +7,8 @@ namespace ApplicationServices.Service
     {
         public SpatialRelationsInfo GetSpatialRelationsInfo(IGeometryPrimitive first, IGeometryPrimitive second)
         {
-            var isIntersect = IntersectorExtension.Intersects(first, second);
-            var isInside = InsiderExtension.IsInside(first, second);
+            var isIntersect = first.Intersects(second);
+            var isInside = first.IsInside(second);
 
             var relationsInfo = new SpatialRelationsInfo
             {

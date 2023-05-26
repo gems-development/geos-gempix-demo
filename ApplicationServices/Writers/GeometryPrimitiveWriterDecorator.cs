@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ApplicationServices.Converters;
+﻿using ApplicationServices.Converters;
 using ApplicationServices.Interfaces;
 
 namespace ApplicationServices.Writers
@@ -27,6 +25,8 @@ namespace ApplicationServices.Writers
             {
                 resultInner
             };
+        if (inner is null)
+            throw new Exception("inner is null");
             foreach (var coordinates in inner)
             {
                 var point = _coordinateConverter.Convert(coordinates.First(), coordinates.Last());
