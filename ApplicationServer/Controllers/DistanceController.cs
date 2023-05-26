@@ -37,12 +37,12 @@ namespace ApplicationServer.Controllers
             var distance = geometryPrimitive1.GetDistance(geometryPrimitive2);
             
             distanceResponse.Distance = distance;
-            // var shortestLine = ShortestLineExtension.GetShortestLine(geometryPrimitive1, geometryPrimitive2);
-            if (geometryPrimitive1 is not Polygon && geometryPrimitive2 is not Polygon) // TODO: проверить и убрать.
-            {
-                var shortestLine = geometryPrimitive1.GetShortestLine(geometryPrimitive2);
-                distanceResponse.Line = shortestLine is null ? null : _geometryPrimitiveWriter.Write(shortestLine);
-            }
+            //var shortestLine = ShortestLineExtension.GetShortestLine(geometryPrimitive1, geometryPrimitive2);          
+            var shortestLine = geometryPrimitive1.GetShortestLine(geometryPrimitive2);
+            if (shortestLine is not null)
+                distanceResponse.Line = _geometryPrimitiveWriter.Write(shortestLine);
+            else
+                throw new Exception("shortest line is null");
 
             return Ok(distanceResponse);
         }

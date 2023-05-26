@@ -25,6 +25,8 @@ public class GeometryPrimitiveWriterDecorator : IGeometryPrimitiveWriter
         {
             resultInner
         };
+        if (inner is null)
+            throw new Exception("inner is null");
         foreach (var coordinates in inner)
         {
             var point = _coordinateConverter.Convert(coordinates.First(), coordinates.Last());
