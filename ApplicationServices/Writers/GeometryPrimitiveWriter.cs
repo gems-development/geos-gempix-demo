@@ -1,16 +1,14 @@
-﻿using ApplicationServices.Interfaces;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using ApplicationServices.Interfaces;
 using GeosGempix;
 using GeosGempix.Models;
 
-namespace ApplicationServices.Writers;
-
-public class GeometryPrimitiveWriter : IGeometryPrimitiveWriter
+namespace ApplicationServices.Writers
 {
-    public IEnumerable<IEnumerable<IEnumerable<double>>> Write(IGeometryPrimitive geometryPrimitive)
+    public class GeometryPrimitiveWriter : IGeometryPrimitiveWriter
     {
-        IEnumerable<IEnumerable<IEnumerable<double>>> package = null!;
-        
-        if (geometryPrimitive is Point point)
+        public IEnumerable<IEnumerable<IEnumerable<double>>> Write(IGeometryPrimitive geometryPrimitive)
         {
             throw new Exception("Point not supported yet");
         }
@@ -18,17 +16,20 @@ public class GeometryPrimitiveWriter : IGeometryPrimitiveWriter
         {
             package = new[]
             {
-                new[]
+                package = new[]
                 {
                     new[]
                     {
-                        line.Point1.X,
-                        line.Point1.Y
-                    },
-                    new[]
-                    {
-                        line.Point2.X,
-                        line.Point2.Y
+                        new[]
+                        {
+                            line.Point1.X,
+                            line.Point1.Y
+                        },
+                        new[]
+                        {
+                            line.Point2.X,
+                            line.Point2.Y
+                        }
                     }
                 }
             };
@@ -37,6 +38,5 @@ public class GeometryPrimitiveWriter : IGeometryPrimitiveWriter
         {
             throw new Exception("Polygon not supported yet");
         }
-        return package;
     }
 }

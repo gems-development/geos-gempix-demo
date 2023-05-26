@@ -1,7 +1,10 @@
-﻿namespace ApplicationServer.Dto;
+﻿using System.Collections.Generic;
 
-public class DistanceResponseDto
+namespace ApplicationServer.Dto
 {
-    public double Distance { get; set; }
-    public IEnumerable<IEnumerable<IEnumerable<double>>> Line { get; set; }
+    public class DistanceResponseDto
+    {
+        public double Distance { get; set; }
+        public IEnumerable<IEnumerable<IEnumerable<double>>> Line { get; set; }
+    }
 }

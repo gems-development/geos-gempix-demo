@@ -1,36 +1,39 @@
-﻿using ApplicationServices.Converters;
+﻿using System.Collections.Generic;
+using System.Linq;
+using ApplicationServices.Converters;
 using ApplicationServices.Interfaces;
 
-namespace ApplicationServices.Writers;
-
-public class GeometryPrimitiveWriterDecorator : IGeometryPrimitiveWriter
+namespace ApplicationServices.Writers
 {
-    private readonly WebMercatorToGeodeticCoordinateConverter _coordinateConverter;
-    private readonly GeometryPrimitiveWriter _geometryPrimitiveWriter;
-
-    public GeometryPrimitiveWriterDecorator(
-        WebMercatorToGeodeticCoordinateConverter coordinateConverter, 
-        GeometryPrimitiveWriter geometryPrimitiveWriter)
+    public class GeometryPrimitiveWriterDecorator : IGeometryPrimitiveWriter
     {
-        _coordinateConverter = coordinateConverter;
-        _geometryPrimitiveWriter = geometryPrimitiveWriter;
-    }
+        private readonly WebMercatorToGeodeticCoordinateConverter _coordinateConverter;
+        private readonly GeometryPrimitiveWriter _geometryPrimitiveWriter;
 
-    public IEnumerable<IEnumerable<IEnumerable<double>>> Write(IGeometryPrimitive geometryPrimitive)
-    {
-        var packedPrimitive = _geometryPrimitiveWriter.Write(geometryPrimitive);
-        var inner = packedPrimitive.FirstOrDefault();
-        var resultInner = new List<double[]>();
-        var result = new List<List<double[]>>
+        public GeometryPrimitiveWriterDecorator(
+            WebMercatorToGeodeticCoordinateConverter coordinateConverter,
+            GeometryPrimitiveWriter geometryPrimitiveWriter)
         {
-            resultInner
-        };
-        foreach (var coordinates in inner)
-        {
-            var point = _coordinateConverter.Convert(coordinates.First(), coordinates.Last());
-            resultInner.Add(new []{point.X, point.Y});
+            _coordinateConverter = coordinateConverter;
+            _geometryPrimitiveWriter = geometryPrimitiveWriter;
         }
-        
-        return result;
+
+        public IEnumerable<IEnumerable<IEnumerable<double>>> Write(IGeometryPrimitive geometryPrimitive)
+        {
+            var packedPrimitive = _geometryPrimitiveWriter.Write(geometryPrimitive);
+            var inner = packedPrimitive.FirstOrDefault();
+            var resultInner = new List<double[]>();
+            var result = new List<List<double[]>>
+            {
+                resultInner
+            };
+            foreach (var coordinates in inner)
+            {
+                var point = _coordinateConverter.Convert(coordinates.First(), coordinates.Last());
+                resultInner.Add(new[] {point.X, point.Y});
+            }
+
+            return result;
+        }
     }
 }
